@@ -12,11 +12,11 @@
             --primary-accent: #00bfa5;
             --dark: #1a252f;
             --bg-body: #f4f7f9;
-            --border-color: #e2e8f0;
+            --border-color: #cbd5e1;
             --danger: #e53e3e;
             --success: #38a169;
             --warning: #dd6b20;
-            --border-radius: 14px;
+            --border-radius: 12px;
         }
 
         * {
@@ -29,16 +29,15 @@
         body {
             background-color: var(--bg-body);
             color: var(--dark);
-            line-height: 1.6;
+            line-height: 1.5;
             padding: 16px;
         }
 
         .container {
-            max-width: 1250px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
-        /* Encabezado Renovado */
         header {
             background: linear-gradient(135deg, var(--primary), #00796b);
             color: white;
@@ -47,8 +46,6 @@
             margin-bottom: 24px;
             box-shadow: 0 10px 25px rgba(0, 77, 64, 0.15);
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
         header h1 {
@@ -75,25 +72,24 @@
 
         @media (min-width: 992px) {
             .grid-layout {
-                grid-template-columns: 1.1fr 1.9fr;
+                grid-template-columns: 1.2fr 1.8fr;
             }
         }
 
-        /* Tarjetas con Sombras Suaves */
         .card {
             background: white;
-            padding: 24px;
+            padding: 22px;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border-color);
+            border: 1px solid #e2e8f0;
             height: fit-content;
         }
 
         .card h2 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -104,7 +100,7 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
         }
 
         .form-group-full {
@@ -112,23 +108,23 @@
         }
 
         .form-group {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .form-group label {
             display: block;
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 11px;
             color: #4a5568;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 11px;
+            padding: 9px 11px;
             border: 1.5px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             background-color: #fafbfc;
             transition: all 0.2s ease;
         }
@@ -137,29 +133,28 @@
             outline: none;
             border-color: var(--primary-accent);
             background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.15);
+            box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.12);
         }
 
-        /* Pestañas de Navegación */
         .tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 20px;
-            background: #edf2f7;
-            padding: 6px;
-            border-radius: 10px;
+            margin-bottom: 18px;
+            background: #e2e8f0;
+            padding: 5px;
+            border-radius: 8px;
         }
 
         .tab-button {
             flex: 1;
-            padding: 10px;
+            padding: 9px;
             background: none;
             border: none;
             cursor: pointer;
             font-weight: 700;
             color: #4a5568;
-            font-size: 13px;
-            border-radius: 8px;
+            font-size: 12.5px;
+            border-radius: 6px;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
@@ -170,7 +165,7 @@
         .tab-button.active {
             background-color: white;
             color: var(--primary);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
         }
 
         .tab-content {
@@ -181,33 +176,31 @@
             display: block;
         }
 
-        /* Estilización de Tablas */
         .table-container {
             overflow-x: auto;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
+            font-size: 12.5px;
         }
 
         th {
-            background-color: #f7fafc;
+            background-color: #f8fafc;
             font-weight: 700;
             color: #4a5568;
             text-transform: uppercase;
             font-size: 11px;
-            letter-spacing: 0.5px;
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
             color: #2d3748;
         }
 
@@ -229,7 +222,6 @@
             color: white !important;
         }
 
-        /* Alertas de Diagnóstico */
         .alert-panel {
             background-color: #fffaf0;
             color: #7b341e;
@@ -240,34 +232,49 @@
         }
 
         .alert-panel h3 {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .diff-pos { color: var(--success); font-weight: bold; }
         .diff-neg { color: var(--danger); font-weight: bold; }
+
+        .input-editable-cell {
+            width: 80px;
+            padding: 4px 6px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .input-editable-cell:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 2px rgba(0, 191, 165, 0.1);
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1><i class="fa-solid fa-calculator"></i> Nómina Centinela</h1>
-        <p>Auditor de colilla y compensación para asociados de COOPEVIAN C.T.A. • Año 2026</p>
+        <h1><i class="fa-solid fa-scale-balanced"></i> Nómina Centinela</h1>
+        <p>Herramienta colaborativa e interactiva para asociados de COOPEVIAN C.T.A. • 2026</p>
     </header>
 
     <div class="grid-layout">
         <!-- SECCIÓN ENTRADAS -->
         <div class="card">
-            <h2><i class="fa-solid fa-calendar-days"></i> Programación del Periodo</h2>
+            <h2><i class="fa-solid fa-calendar-week"></i> 1. Datos del Turno y Período</h2>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="quincena">Quincena:</label>
+                    <label for="quincena">Quincena de Colilla:</label>
                     <select id="quincena" onchange="actualizarQuincenaPredeterminada()">
                         <option value="2" selected>2ª Quincena (16 al 30)</option>
                         <option value="1">1ª Quincena (01 al 15)</option>
@@ -292,52 +299,60 @@
                     </select>
                 </div>
 
-                <div class="form-group-full" style="margin-top: 10px; margin-bottom: 5px;">
-                    <span style="font-size: 11px; font-weight: bold; color: var(--primary); text-transform: uppercase;">Turnos de 12 horas laborados:</span>
+                <div class="form-group-full" style="margin-top: 5px; margin-bottom: 2px;">
+                    <span style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase;">Generador Estimado (Turnos de 12h):</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="turnosDiurnos">Turnos Diurnos (Normales):</label>
-                    <input type="number" id="turnosDiurnos" value="6" min="0" oninput="calcularNomina()">
+                    <label for="turnosDiurnos">Turnos Diurnos:</label>
+                    <input type="number" id="turnosDiurnos" value="6" min="0" oninput="generarHorasEstimadas()">
                 </div>
 
                 <div class="form-group">
-                    <label for="turnosNocturnos">Turnos Nocturnos (Normales):</label>
-                    <input type="number" id="turnosNocturnos" value="2" min="0" oninput="calcularNomina()">
+                    <label for="turnosNocturnos">Turnos Nocturnos:</label>
+                    <input type="number" id="turnosNocturnos" value="2" min="0" oninput="generarHorasEstimadas()">
                 </div>
 
                 <div class="form-group">
-                    <label for="turnosDominicalesD">Dominical/Festivo Diurnos:</label>
-                    <input type="number" id="turnosDominicalesD" value="3" min="0" oninput="calcularNomina()">
+                    <label for="turnosDominicalesD">Festivos Diurnos:</label>
+                    <input type="number" id="turnosDominicalesD" value="3" min="0" oninput="generarHorasEstimadas()">
                 </div>
 
                 <div class="form-group">
-                    <label for="turnosDominicalesN">Dominical/Festivo Nocturnos:</label>
-                    <input type="number" id="turnosDominicalesN" value="0" min="0" oninput="calcularNomina()">
+                    <label for="turnosDominicalesN">Festivos Nocturnos:</label>
+                    <input type="number" id="turnosDominicalesN" value="0" min="0" oninput="generarHorasEstimadas()">
                 </div>
 
-                <div class="form-group-full" style="margin-top: 10px; margin-bottom: 5px;">
-                    <span style="font-size: 11px; font-weight: bold; color: var(--primary); text-transform: uppercase;">Variables adicionales:</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="extrasAdicionales">Horas Extras Reportadas:</label>
-                    <input type="number" id="extrasAdicionales" value="4.00" step="0.1" oninput="calcularNomina()">
+                <div class="form-group-full" style="margin-top: 5px; margin-bottom: 2px;">
+                    <span style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase;">2. Descuentos Editables:</span>
                 </div>
 
                 <div class="form-group">
-                    <label for="descuentoAdmision">Cuota Admisión (550)[cite: 1]:</label>
+                    <label for="descuentoAdmision">Cuota Admisión (550)[cite: 3, 4]:</label>
                     <input type="number" id="descuentoAdmision" value="29656" oninput="calcularNomina()">
                 </div>
 
                 <div class="form-group">
-                    <label for="bonificacion">Bonificación Semestral (049)[cite: 2]:</label>
-                    <input type="number" id="bonificacion" value="0" oninput="calcularNomina()">
+                    <label for="descuentoCoopantex">COOPANTEX (661)[cite: 3, 4]:</label>
+                    <input type="number" id="descuentoCoopantex" value="0" oninput="calcularNomina()">
                 </div>
 
                 <div class="form-group">
-                    <label for="compExtraordinaria">Comp. Extra (081)[cite: 1]:</label>
+                    <label for="regimenPension">Entidad de Pensión:</label>
+                    <select id="regimenPension" onchange="calcularNomina()">
+                        <option value="PORVENIR" selected>PORVENIR (567)[cite: 1]</option>
+                        <option value="COLPENSIONES">COLPENSIONES (567)[cite: 3, 4]</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="compExtraordinaria">Comp. Extra (081)[cite: 3, 4]:</label>
                     <input type="number" id="compExtraordinaria" value="529196" oninput="calcularNomina()">
+                </div>
+                
+                <div class="form-group">
+                    <label for="bonificacion">Bonificación (049)[cite: 3]:</label>
+                    <input type="number" id="bonificacion" value="0" oninput="calcularNomina()">
                 </div>
             </div>
         </div>
@@ -345,25 +360,28 @@
         <!-- SECCIÓN RESULTADOS -->
         <div class="card">
             <div class="tabs">
-                <button class="tab-button active" onclick="verPestana('calculo')"><i class="fa-solid fa-receipt"></i> Liquidación Teórica</button>
-                <button class="tab-button" onclick="verPestana('comparar')"><i class="fa-solid fa-scale-balanced"></i> Comparador</button>
+                <button class="tab-button active" onclick="verPestana('calculo')"><i class="fa-solid fa-receipt"></i> Liquidador</button>
+                <button class="tab-button" onclick="verPestana('comparar')"><i class="fa-solid fa-scale-balanced"></i> Comparador de Colillas</button>
             </div>
 
-            <!-- CONTENIDO PESTAÑA CÁLCULO -->
+            <!-- TAB DE LIQUIDACIÓN -->
             <div id="pestana-calculo" class="tab-content active">
+                <p style="font-size: 11.5px; color: #64748b; margin-bottom: 12px;">
+                    <i class="fa-solid fa-info-circle"></i> <strong>Sugerencia de Uso:</strong> Puedes modificar las horas o valores de los auxilios directamente en las casillas de la tabla para adaptarlo a tu reporte exacto.
+                </p>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
                                 <th>Cpto</th>
                                 <th>Concepto</th>
-                                <th class="text-center">Turnos/Horas</th>
+                                <th class="text-center" style="width: 100px;">Horas/Cant</th>
                                 <th class="text-right">Devengos</th>
                                 <th class="text-right">Deducciones</th>
                             </tr>
                         </thead>
                         <tbody id="tablaResultados">
-                            <!-- Inyección dinámica -->
+                            <!-- Inyección por Javascript -->
                         </tbody>
                         <tfoot>
                             <tr class="total-row">
@@ -372,25 +390,23 @@
                                 <td class="text-right" id="subtotalDed">$0</td>
                             </tr>
                             <tr class="neto-row">
-                                <td colspan="3" style="color: white; font-size: 14px;">NETO ESTIMADO QUINCENA</td>
-                                <td colspan="2" class="text-right" id="netoEstimado" style="color: white; font-size: 15px;">$0</td>
+                                <td colspan="3" style="color: white;">NETO QUINCENAL ESTIMADO</td>
+                                <td colspan="2" class="text-right" id="netoEstimado" style="color: white; font-size: 14px;">$0</td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
 
-            <!-- CONTENIDO PESTAÑA COMPARAR -->
+            <!-- TAB DE COMPARADOR -->
             <div id="pestana-comparar" class="tab-content">
-                <p style="font-size: 12px; color: #718096; margin-bottom: 15px;">Digita los valores totales de tu colilla física para contrastar diferencias:</p>
-                
-                <div class="form-grid" style="margin-bottom: 20px;">
+                <div class="form-grid" style="margin-bottom: 15px;">
                     <div class="form-group">
-                        <label for="realDevengado">Total Devengado Colilla[cite: 1]:</label>
+                        <label for="realDevengado">Total Devengados Colilla[cite: 3, 4]:</label>
                         <input type="number" id="realDevengado" value="2006431" oninput="comparar()">
                     </div>
                     <div class="form-group">
-                        <label for="realDeducciones">Total Deducciones Colilla[cite: 1]:</label>
+                        <label for="realDeducciones">Total Deducciones Colilla[cite: 3, 4]:</label>
                         <input type="number" id="realDeducciones" value="412808" oninput="comparar()">
                     </div>
                 </div>
@@ -398,10 +414,10 @@
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr style="background-color: #f7fafc;">
+                            <tr style="background-color: #f8fafc;">
                                 <th>Resultado</th>
-                                <th class="text-right">Teórico</th>
-                                <th class="text-right">Colilla Real[cite: 1]</th>
+                                <th class="text-right">Simulado</th>
+                                <th class="text-right">Colilla Real[cite: 3, 4]</th>
                                 <th class="text-right">Diferencia</th>
                             </tr>
                         </thead>
@@ -419,7 +435,7 @@
                                 <td class="text-right" id="diferenciaDed">$0</td>
                             </tr>
                             <tr class="total-row">
-                                <td><strong>Neto Recibido[cite: 1]</strong></td>
+                                <td><strong>Neto Recibido[cite: 3, 4]</strong></td>
                                 <td class="text-right" id="teoricoNet">$0</td>
                                 <td class="text-right" id="colillaNet">$0</td>
                                 <td class="text-right" id="diferenciaNet">$0</td>
@@ -431,62 +447,99 @@
         </div>
     </div>
 
-    <!-- PANEL AUDITORÍA -->
     <div class="alert-panel">
-        <h3><i class="fa-solid fa-circle-exclamation"></i> Diagnóstico Administrativo</h3>
-        <div id="auditoriaLog">Cargando análisis dinámico...</div>
+        <h3><i class="fa-solid fa-circle-exclamation"></i> Diagnóstico de Cotizaciones e IBC</h3>
+        <div id="auditoriaLog">Cargando datos...</div>
     </div>
 </div>
 
 <script>
-    // Variables maestras actualizadas año 2026
+    // Variables maestras COOPEVIAN 2026
     const SMMLV_2026 = 1750905;
     const VALOR_HORA_BASICA = 7958.6591;
 
-    // Auxilios vigentes quincenales
-    const AUX_COMUNICACION = 76356;
-    const AUX_ALIMENTACION = 157731;
-    const AUX_ALIMENTACION_EXTRA = 36804;
-    const AUX_MOVILIZACION = 90515;
-    const AUX_BIENESTAR = 48458;
-    const AUX_TRANSPORTE_COOP = 118160;
-
     // Descuentos reglamentarios estatutarios
-    const APORTES_SOCIALES_Q = 126940; // Art 80 Estatuto ($253.881 / 2)[cite: 1]
-    const FONDO_INCAPACIDADES_Q = 35018; // Art 13 Estatuto ($70.036 / 2)[cite: 1]
+    const APORTES_SOCIALES_Q = 126940; //[cite: 3, 4]
+    const FONDO_INCAPACIDADES_Q = 35018; //[cite: 3, 4]
 
-    // Pólizas y otros internos
-    const POLIZA_COLECTIVA = 5750; //[cite: 1]
-    const SOLUCION_VIVIENDA = 29697; // Solo 1ª quincena[cite: 2]
-    const FUN_VIVIR = 12450; //[cite: 1]
-    const FONDEVIAN = 30952; //[cite: 1]
-    const FONDOPENSIONVE = 3609; //[cite: 1]
+    // Pólizas e internos fijos quincenales
+    const POLIZA_COLECTIVA = 5750; //[cite: 3, 4]
+    const SOLUCION_VIVIENDA = 29697; // 1ª Q[cite: 3]
+    const FUN_VIVIR = 12450; //[cite: 3, 4]
+    const FONDEVIAN = 30952; //[cite: 3, 4]
+    const FONDOPENSIONVE = 3609; //[cite: 3, 4]
 
-    // Datos predeterminados de las quincenas reales para demostración
+    // Variables de horas dinámicas y editables (persisten tras cálculos)
+    let horasEditadas = {
+        hBasicasD: 69.40,
+        hBasicasN: 18.68,
+        hDescansos: 13.91,
+        hExtras: 8.47,
+        hFestivasD: 36.00,
+        hFestivasN: 0.00
+    };
+
+    // Valores de auxilios que el usuario puede editar en tabla
+    let auxiliosEditados = {
+        auxComunicacion: 76356,
+        auxAlimentacionN: 157731,
+        auxAlimentacionE: 36804,
+        auxMovilizacion: 90515,
+        auxBienestar: 48458,
+        auxTransporteCoop: 118160
+    };
+
+    // Bases predeterminadas (Darwin vs Carlos)
     const quincenasPredeterminadas = {
         1: {
             turnosDiurnos: 4,
             turnosNocturnos: 4,
             turnosDominicalesD: 2,
             turnosDominicalesN: 2,
-            extrasAdicionales: 8.47,
+            horasBasicasD: 44.04,
+            horasBasicasN: 44.04,
+            horasDescansos: 13.54,
+            horasExtras: 8.47,
+            horasFestivasDiurnas: 24.00,
+            horasFestivasNocturnas: 24.00,
             descuentoAdmision: 29656,
+            descuentoCoopantex: 0,
+            pensionRegimen: "PORVENIR",
             bonificacion: 1643941,
             compExtraordinaria: 495900,
             realDevengado: 3685866,
-            realDeducciones: 442086
+            realDeducciones: 442086,
+            auxComunicacion: 74292,
+            auxAlimentacionN: 78576,
+            auxAlimentacionE: 78576,
+            auxMovilizacion: 88068,
+            auxBienestar: 145374,
+            auxTransporteCoop: 114967
         },
         2: {
             turnosDiurnos: 6,
             turnosNocturnos: 2,
             turnosDominicalesD: 3,
             turnosDominicalesN: 0,
-            extrasAdicionales: 8.47, // 6.67 Sup 1 + 1.80 Sup 2[cite: 1]
+            horasBasicasD: 69.40,
+            horasBasicasN: 18.68,
+            horasDescansos: 13.91,
+            horasExtras: 8.47,
+            horasFestivasDiurnas: 36.00,
+            horasFestivasNocturnas: 0.00,
             descuentoAdmision: 29656,
+            descuentoCoopantex: 0,
+            pensionRegimen: "PORVENIR",
             bonificacion: 0,
             compExtraordinaria: 529196,
             realDevengado: 2006431,
-            realDeducciones: 412808
+            realDeducciones: 412808,
+            auxComunicacion: 76356,
+            auxAlimentacionN: 157731,
+            auxAlimentacionE: 36804,
+            auxMovilizacion: 90515,
+            auxBienestar: 48458,
+            auxTransporteCoop: 118160
         }
     };
 
@@ -498,13 +551,55 @@
         document.getElementById('turnosNocturnos').value = data.turnosNocturnos;
         document.getElementById('turnosDominicalesD').value = data.turnosDominicalesD;
         document.getElementById('turnosDominicalesN').value = data.turnosDominicalesN;
-        document.getElementById('extrasAdicionales').value = data.extrasAdicionales;
+
+        horasEditadas.hBasicasD = data.horasBasicasD;
+        horasEditadas.hBasicasN = data.horasBasicasN;
+        horasEditadas.hDescansos = data.horasDescansos;
+        horasEditadas.hExtras = data.horasExtras;
+        horasEditadas.hFestivasD = data.horasFestivasDiurnas;
+        horasEditadas.hFestivasN = data.horasFestivasNocturnas;
+
+        auxiliosEditados.auxComunicacion = data.auxComunicacion;
+        auxiliosEditados.auxAlimentacionN = data.auxAlimentacionN;
+        auxiliosEditados.auxAlimentacionE = data.auxAlimentacionE;
+        auxiliosEditados.auxMovilizacion = data.auxMovilizacion;
+        auxiliosEditados.auxBienestar = data.auxBienestar;
+        auxiliosEditados.auxTransporteCoop = data.auxTransporteCoop;
+
         document.getElementById('descuentoAdmision').value = data.descuentoAdmision;
+        document.getElementById('descuentoCoopantex').value = data.descuentoCoopantex;
+        document.getElementById('regimenPension').value = data.pensionRegimen;
         document.getElementById('bonificacion').value = data.bonificacion;
         document.getElementById('compExtraordinaria').value = data.compExtraordinaria;
         document.getElementById('realDevengado').value = data.realDevengado;
         document.getElementById('realDeducciones').value = data.realDeducciones;
 
+        calcularNomina();
+    }
+
+    function generarHorasEstimadas() {
+        const tDiurnos = parseFloat(document.getElementById('turnosDiurnos').value) || 0;
+        const tNocturnos = parseFloat(document.getElementById('turnosNocturnos').value) || 0;
+        const tDomD = parseFloat(document.getElementById('turnosDominicalesD').value) || 0;
+        const tDomN = parseFloat(document.getElementById('turnosDominicalesN').value) || 0;
+
+        // Factores proporcionales de conversión de turnos de 12h a horas en colilla[cite: 3, 4]
+        horasEditadas.hBasicasD = Number(((tDiurnos + tDomD) * 11.56).toFixed(2));
+        horasEditadas.hBasicasN = Number(((tNocturnos + tDomN) * 9.34).toFixed(2));
+        horasEditadas.hDescansos = Number(((tDiurnos + tNocturnos + tDomD + tDomN) * 1.15).toFixed(2));
+        horasEditadas.hFestivasD = Number((tDomD * 12).toFixed(2));
+        horasEditadas.hFestivasN = Number((tDomN * 12).toFixed(2));
+
+        calcularNomina();
+    }
+
+    function cambiarHoraManual(campo, val) {
+        horasEditadas[campo] = parseFloat(val) || 0;
+        calcularNomina();
+    }
+
+    function cambiarAuxilioManual(campo, val) {
+        auxiliosEditados[campo] = parseFloat(val) || 0;
         calcularNomina();
     }
 
@@ -524,67 +619,55 @@
         const q = document.getElementById('quincena').value;
         const mes = parseInt(document.getElementById('mes').value);
 
-        // Turnos introducidos
-        const tDiurnos = parseFloat(document.getElementById('turnosDiurnos').value) || 0;
-        const tNocturnos = parseFloat(document.getElementById('turnosNocturnos').value) || 0;
-        const tDomD = parseFloat(document.getElementById('turnosDominicalesD').value) || 0;
-        const tDomN = parseFloat(document.getElementById('turnosDominicalesN').value) || 0;
-
-        const extras = parseFloat(document.getElementById('extrasAdicionales').value) || 0;
         const descAdmision = parseFloat(document.getElementById('descuentoAdmision').value) || 0;
+        const descCoopantex = parseFloat(document.getElementById('descuentoCoopantex').value) || 0;
+        const regimenPension = document.getElementById('regimenPension').value;
         const bonifSemestral = parseFloat(document.getElementById('bonificacion').value) || 0;
         const compExtra = parseFloat(document.getElementById('compExtraordinaria').value) || 0;
 
-        // ---Conversión de Turnos (12h) a Horas de Colilla---
-        const hBasicasD = (tDiurnos + tDomD) * 11.56; // Factor ponderado ordinario diurno[cite: 1]
-        const hBasicasN = (tNocturnos + tDomN) * 9.34;  // Factor ponderado ordinario nocturno[cite: 1]
-        const hDescansos = (tDiurnos + tNocturnos + tDomD + tDomN) * 1.15; // Factor proporcional descansos[cite: 1]
+        // --- Cálculos de Devengados (Usando Horas Editables o Sugeridas) ---
+        const valBasicoD = horasEditadas.hBasicasD * VALOR_HORA_BASICA;
+        const valBasicoN = horasEditadas.hBasicasN * VALOR_HORA_BASICA;
+        const valDescansos = horasEditadas.hDescansos * VALOR_HORA_BASICA;
 
-        // Equivalencias de Valores de Horas
-        const valBasicoD = hBasicasD * VALOR_HORA_BASICA;
-        const valBasicoN = hBasicasN * VALOR_HORA_BASICA;
-        const valDescansos = hDescansos * VALOR_HORA_BASICA;
+        // Horas Extras (Recargo del 1.55 ponderado)
+        const valExtrasD = horasEditadas.hExtras * (VALOR_HORA_BASICA * 1.55);
 
-        // Horas extras estimadas según el total de extras reportado
-        const valExtrasD = extras * (VALOR_HORA_BASICA * 1.55); // Promedio ponderado de recargo
+        // Recargos Festivos Dominicales[cite: 3, 4]
+        const valRecargoDomD = horasEditadas.hFestivasD * (VALOR_HORA_BASICA * 0.1055);
+        const valRecargoDomN = horasEditadas.hFestivasN * (VALOR_HORA_BASICA * 0.1383);
 
-        // Recargos Festivos (Cpto 094 y 095)
-        const valRecargoDomD = (tDomD * 12) * (VALOR_HORA_BASICA * 0.1055); // Factor dominical diurno observado[cite: 1]
-        const valRecargoDomN = (tDomN * 12) * (VALOR_HORA_BASICA * 0.1383); // Factor dominical nocturno observado[cite: 2]
-
-        // Construcción de Lista de Devengados
         let devengados = [
-            { cod: '001', desc: 'COMP.ORD.BAS D', cant: `${hBasicasD.toFixed(1)} h`, v: valBasicoD },
-            { cod: '003', desc: 'COMP.ORD.BAS N', cant: `${hBasicasN.toFixed(1)} h`, v: valBasicoN },
-            { cod: '040', desc: 'AUX.COMUNICACI', cant: '-', v: AUX_COMUNICACION },
-            { cod: '045', desc: 'AUX.ALIMENTACI (N)', cant: '-', v: AUX_ALIMENTACION },
-            { cod: '047', desc: 'AUX.ALIMENTACI (E)', cant: '-', v: AUX_ALIMENTACION_EXTRA },
-            { cod: '048', desc: 'AUX.MOVILIZACI', cant: '-', v: AUX_MOVILIZACION },
-            { cod: '080', desc: 'DESCANSOS COMP', cant: `${hDescansos.toFixed(1)} h`, v: valDescansos },
-            { cod: '081', desc: 'COMP.EXTRAORDI', cant: '-', v: compExtra },
-            { cod: '082', desc: 'AUXILIO DE TRA', cant: '-', v: AUX_TRANSPORTE_COOP },
-            { cod: '089', desc: 'AUX.BIENESTAR', cant: '-', v: AUX_BIENESTAR }
+            { cod: '001', desc: 'COMP.ORD.BAS D', key: 'hBasicasD', isHour: true, val: valBasicoD },
+            { cod: '003', desc: 'COMP.ORD.BAS N', key: 'hBasicasN', isHour: true, val: valBasicoN },
+            { cod: '040', desc: 'AUX.COMUNICACI', key: 'auxComunicacion', isHour: false, val: auxiliosEditados.auxComunicacion },
+            { cod: '045', desc: 'AUX.ALIMENTACI (N)', key: 'auxAlimentacionN', isHour: false, val: auxiliosEditados.auxAlimentacionN },
+            { cod: '047', desc: 'AUX.ALIMENTACI (E)', key: 'auxAlimentacionE', isHour: false, val: auxiliosEditados.auxAlimentacionE },
+            { cod: '048', desc: 'AUX.MOVILIZACI', key: 'auxMovilizacion', isHour: false, val: auxiliosEditados.auxMovilizacion },
+            { cod: '080', desc: 'DESCANSOS COMP', key: 'hDescansos', isHour: true, val: valDescansos },
+            { cod: '081', desc: 'COMP.EXTRAORDI', key: null, isHour: false, val: compExtra },
+            { cod: '082', desc: 'AUXILIO DE TRA', key: 'auxTransporteCoop', isHour: false, val: auxiliosEditados.auxTransporteCoop },
+            { cod: '089', desc: 'AUX.BIENESTAR', key: 'auxBienestar', isHour: false, val: auxiliosEditados.auxBienestar }
         ];
 
-        if (valExtrasD > 0) devengados.push({ cod: '091/2', desc: 'COMP.EXTRA.SUP', cant: `${extras} h`, v: valExtrasD });
-        if (valRecargoDomD > 0) devengados.push({ cod: '094', desc: 'COMPEXT.FESTDI', cant: `${tDomD * 12} h`, v: valRecargoDomD });
-        if (valRecargoDomN > 0) devengados.push({ cod: '095', desc: 'COMPEXT.FESTNO', cant: `${tDomN * 12} h`, v: valRecargoDomN });
-        if (bonifSemestral > 0) devengados.push({ cod: '049', desc: 'BONIF.SEMESTRA', cant: '-', v: bonifSemestral });
+        if (valExtrasD > 0) devengados.push({ cod: '091/2', desc: 'COMP.EXTRA.SUP', key: 'hExtras', isHour: true, val: valExtrasD });
+        if (valRecargoDomD > 0) devengados.push({ cod: '094', desc: 'COMPEXT.FESTDI', key: 'hFestivasD', isHour: true, val: valRecargoDomD });
+        if (valRecargoDomN > 0) devengados.push({ cod: '095', desc: 'COMPEXT.FESTNO', key: 'hFestivasN', isHour: true, val: valRecargoDomN });
+        if (bonifSemestral > 0) devengados.push({ cod: '049', desc: 'BONIF.SEMESTRA', key: null, isHour: false, val: bonifSemestral });
 
-        const totalDevengado = devengados.reduce((acc, x) => acc + x.v, 0);
+        const totalDevengado = devengados.reduce((acc, x) => acc + x.val, 0);
 
-        // ---Deducciones de Ley y Estatutos---
-        let ibc = totalDevengado - AUX_TRANSPORTE_COOP - AUX_ALIMENTACION;
+        // --- Cálculos de Deducciones ---
+        let ibc = totalDevengado - auxiliosEditados.auxTransporteCoop - auxiliosEditados.auxAlimentacionN;
         if (bonifSemestral > 0) ibc -= bonifSemestral;
         if (ibc < SMMLV_2026) ibc = SMMLV_2026;
 
-        // Porcentaje real observado de cotización quincenal
+        // EPS Sura y Pensiones (Fórmula con porcentaje de descuento real del 3.38% quincenal)
         const epsSura = ibc * 0.0338;
-        const porvenir = ibc * 0.0338;
+        const pensionSurgida = ibc * 0.0338;
 
         const cuotaAdmin = totalDevengado * 0.025;
 
-        // Cuota adicional solo meses impares y diciembre
         let cuotaAdicional = 0;
         const mesesConAdicional = [1, 3, 5, 7, 8, 10, 12];
         if (mesesConAdicional.includes(mes)) {
@@ -592,39 +675,57 @@
         }
 
         let deducciones = [
-            { cod: '505', desc: 'POLIZA COLECTI', v: POLIZA_COLECTIVA },
-            { cod: '550', desc: 'ADMISION (Cobro Quincenal)', v: descAdmision },
-            { cod: '551', desc: 'EPS SURA', v: epsSura },
-            { cod: '554', desc: 'FONDO DE INCAP', v: FONDO_INCAPACIDADES_Q },
-            { cod: '555', desc: 'APORTES SOCIAL', v: APORTES_SOCIALES_Q },
-            { cod: '557', desc: 'ADMINISTRACION', v: cuotaAdmin },
-            { cod: '567', desc: 'PORVENIR', v: porvenir },
-            { cod: '582', desc: 'FUN.VIVIR', v: FUN_VIVIR },
-            { cod: '677', desc: 'FONDEVIAN', v: FONDEVIAN },
-            { cod: '679', desc: 'FONDOPENSIONVE', v: FONDOPENSIONVE }
+            { cod: '505', desc: 'POLIZA COLECTI', val: POLIZA_COLECTIVA },
+            { cod: '550', desc: 'ADMISION', val: descAdmision },
+            { cod: '551', desc: 'EPS SURA', val: epsSura },
+            { cod: '554', desc: 'FONDO DE INCAP', val: FONDO_INCAPACIDADES_Q },
+            { cod: '555', desc: 'APORTES SOCIAL', val: APORTES_SOCIALES_Q },
+            { cod: '557', desc: 'ADMINISTRACION', val: cuotaAdmin },
+            { cod: '582', desc: 'FUN.VIVIR', val: FUN_VIVIR },
+            { cod: '677', desc: 'FONDEVIAN', val: FONDEVIAN },
+            { cod: '679', desc: 'FONDOPENSIONVE', val: FONDOPENSIONVE }
         ];
 
+        // Discriminación de régimen pensional seleccionado[cite: 3, 4]
+        if (regimenPension === 'COLPENSIONES') {
+            deducciones.push({ cod: '567', desc: 'COLPENSIONES', val: pensionSurgida });
+        } else {
+            deducciones.push({ cod: '567', desc: 'PORVENIR', val: pensionSurgida });
+        }
+
+        if (descCoopantex > 0) {
+            deducciones.push({ cod: '661', desc: 'COOPANTEX', val: descCoopantex });
+        }
         if (q === '1') {
-            deducciones.push({ cod: '519', desc: 'SOLUCION DE VI', v: SOLUCION_VIVIENDA });
+            deducciones.push({ cod: '519', desc: 'SOLUCION DE VI', val: SOLUCION_VIVIENDA });
         }
         if (cuotaAdicional > 0) {
-            deducciones.push({ cod: '558', desc: 'ADMIN. ADICIONAL (33%)', v: cuotaAdicional });
+            deducciones.push({ cod: '558', desc: 'ADMIN. ADICIONAL (33%)', val: cuotaAdicional });
         }
 
-        const totalDeducciones = deducciones.reduce((acc, x) => acc + x.v, 0);
+        const totalDeducciones = deducciones.reduce((acc, x) => acc + x.val, 0);
         const neto = totalDevengado - totalDeducciones;
 
-        // Renderizar tabla
+        // --- Renderización en Tabla ---
         const tbody = document.getElementById('tablaResultados');
         tbody.innerHTML = '';
 
         devengados.forEach(d => {
+            let colCant = '';
+            if (d.isHour && d.key) {
+                colCant = `<input type="number" step="0.01" class="input-editable-cell" value="${horasEditadas[d.key]}" oninput="cambiarHoraManual('${d.key}', this.value)">`;
+            } else if (!d.isHour && d.key) {
+                colCant = `<input type="number" class="input-editable-cell" style="width:90px;" value="${auxiliosEditados[d.key]}" oninput="cambiarAuxilioManual('${d.key}', this.value)">`;
+            } else {
+                colCant = d.cant;
+            }
+
             tbody.innerHTML += `
                 <tr class="row-devengado">
                     <td><strong>${d.cod}</strong></td>
                     <td>${d.desc}</td>
-                    <td class="text-center">${d.cant}</td>
-                    <td class="text-right">${formatoMoneda(d.v)}</td>
+                    <td class="text-center">${colCant}</td>
+                    <td class="text-right">${formatoMoneda(d.val)}</td>
                     <td class="text-right">-</td>
                 </tr>
             `;
@@ -637,7 +738,7 @@
                     <td>${d.desc}</td>
                     <td class="text-center">-</td>
                     <td class="text-right">-</td>
-                    <td class="text-right">${formatoMoneda(d.v)}</td>
+                    <td class="text-right">${formatoMoneda(d.val)}</td>
                 </tr>
             `;
         });
@@ -646,13 +747,12 @@
         document.getElementById('subtotalDed').innerText = formatoMoneda(totalDeducciones);
         document.getElementById('netoEstimado').innerText = formatoMoneda(neto);
 
-        // Actualizar datos del comparador
         document.getElementById('teoricoDev').innerText = formatoMoneda(totalDevengado);
         document.getElementById('teoricoDed').innerText = formatoMoneda(totalDeducciones);
         document.getElementById('teoricoNet').innerText = formatoMoneda(neto);
 
         comparar();
-        generarDiagnostico(q, mes, ibc, cuotaAdicional, bonifSemestral);
+        generarDiagnostico(q, mes, ibc, cuotaAdicional, bonifSemestral, regimenPension);
     }
 
     function comparar() {
@@ -686,26 +786,27 @@
         }
     }
 
-    function generarDiagnostico(q, mes, ibc, cuotaAdicional, bonif) {
+    function generarDiagnostico(q, mes, ibc, cuotaAdicional, bonif, pension) {
         const log = document.getElementById('auditoriaLog');
         let txt = '';
 
         if (cuotaAdicional > 0) {
-            txt += `<p style="margin-bottom: 8px;">⚠️ <strong>Cuota de Admin. Adicional:</strong> Activa para este mes (${formatoMoneda(cuotaAdicional)}). Se aplica automáticamente por ser mes impar o de alta liquidación.</p>`;
+            txt += `<p style="margin-bottom: 6px;">⚠️ <strong>Cuota de Admin. Adicional:</strong> Activa este mes por valor de ${formatoMoneda(cuotaAdicional)} (Mes impar o de alta liquidación según Estatutos).</p>`;
         } else {
-            txt += `<p style="margin-bottom: 8px;">✓ <strong>Cuota de Admin. Adicional:</strong> Inactiva para este mes de liquidación (Exento según estatutos de la cooperativa).</p>`;
+            txt += `<p style="margin-bottom: 6px;">✓ <strong>Cuota de Admin. Adicional:</strong> Inactiva este período (Exento por calendario de la cooperativa).</p>`;
         }
 
-        txt += `<p style="margin-bottom: 8px;">✓ <strong>IBC de Seguridad Social:</strong> Calculado sobre <strong>${formatoMoneda(ibc)}</strong>, protegiendo los límites de ley y exonerando auxilios cooperativos.</p>`;
+        txt += `<p style="margin-bottom: 6px;">✓ <strong>Régimen de Pensión Activo:</strong> Cotizando a través del concepto 567 con destino a <strong>${pension}</strong>[cite: 3, 4].</p>`;
+        txt += `<p style="margin-bottom: 6px;">✓ <strong>IBC de Seguridad Social:</strong> Base quincenal de <strong>${formatoMoneda(ibc)}</strong> (respetando los topes prestacionales vigentes para el año 2026).</p>`;
 
         if (q === '1' && bonif > 0) {
-            txt += `<p style="color: var(--success); font-weight: bold;">🎁 Bonificación semestral de junio procesada exitosamente en el total devengado.</p>`;
+            txt += `<p style="color: var(--success); font-weight: bold; margin-top: 5px;">🎁 Se liquidó correctamente el acumulado semestral en el total de devengados.</p>`;
         }
 
         log.innerHTML = txt;
     }
 
-    // Carga inicial al cargar la página
+    // Inicialización automática de la vista
     actualizarQuincenaPredeterminada();
 </script>
 
