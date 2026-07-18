@@ -18,6 +18,8 @@
             --card: #ffffff;
             --text: #1a252f;
             --border: #cbd5e1;
+            --input-bg: #f1f5f9;    /* fondo para inputs en modo claro */
+            --input-border: #94a3b8;
             --danger: #e53e3e;
             --success: #38a169;
             --shadow: 0 4px 20px rgba(0,0,0,0.06);
@@ -73,7 +75,7 @@
             letter-spacing: 0.3px;
         }
 
-        /* FORMULARIO SIMPLE */
+        /* FORMULARIO - INPUTS MEJORADOS */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -91,13 +93,14 @@
         }
         .form-group input, .form-group select {
             padding: 10px 12px;
-            border: 1.5px solid var(--border);
+            border: 2px solid var(--input-border);  /* borde más grueso */
             border-radius: 10px;
             font-size: 15px;
-            background: #fafbfc;
+            background: var(--input-bg);             /* fondo diferenciado */
+            color: var(--text);
             transition: 0.2s;
             width: 100%;
-            color: var(--text);
+            -moz-appearance: textfield;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
@@ -105,15 +108,11 @@
             background: white;
             box-shadow: 0 0 0 3px rgba(0,191,165,0.15);
         }
-        .form-group input[type="number"] {
-            -moz-appearance: textfield;
-        }
         .form-group input[type="number"]::-webkit-outer-spin-button,
         .form-group input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-
         .full-width { grid-column: span 2; }
 
         /* BOTONES */
@@ -147,7 +146,7 @@
         .btn-danger { background: var(--danger); color: white; }
         .btn-danger:hover { background: #c53030; }
 
-        /* TABLA DE RESULTADOS */
+        /* TABLA */
         .table-container {
             overflow-x: auto;
             border-radius: 12px;
@@ -218,6 +217,7 @@
             header h1 { font-size: 18px; }
             .card { padding: 16px; }
             th, td { padding: 8px 6px; font-size: 12px; }
+            .form-group input, .form-group select { font-size: 14px; padding: 12px; }
         }
 
         /* DARK MODE (automático) */
@@ -227,12 +227,19 @@
                 --card: #16213e;
                 --text: #e9ecef;
                 --border: #2d3a5e;
+                --input-bg: #1e293b;      /* fondo oscuro para inputs */
+                --input-border: #475569;
             }
             .form-group input, .form-group select {
-                background: #0f0f1f;
+                background: var(--input-bg);
                 color: #e9ecef;
-                border-color: #2d3a5e;
+                border-color: var(--input-border);
             }
+            .form-group input:focus, .form-group select:focus {
+                background: #0f0f1f;
+                border-color: var(--primary-accent);
+            }
+            .form-group label { color: #a0aec0; }
             th { background: #0f1a2e; color: #a0aec0; }
             td { border-color: #2d3a5e; color: #e2e8f0; }
             .row-dev { background: #1a2e2a; }
@@ -248,6 +255,7 @@
             body { background: white; padding: 0; }
             .btn-group, .no-print { display: none !important; }
             .card { box-shadow: none; border: 1px solid #ccc; }
+            .form-group input, .form-group select { border: 1px solid #999; background: white; }
         }
     </style>
 </head>
@@ -258,7 +266,7 @@
         <p>Ingresa tus turnos y obtén tu liquidación al instante</p>
     </header>
 
-    <!-- ===== PARÁMETROS ===== -->
+    <!-- ===== PERÍODO ===== -->
     <div class="card">
         <h2><i class="fa-regular fa-calendar"></i> Período</h2>
         <div class="form-grid">
@@ -283,7 +291,7 @@
         </div>
     </div>
 
-    <!-- ===== TURNOS (SOLO CANTIDADES) ===== -->
+    <!-- ===== TURNOS ===== -->
     <div class="card">
         <h2><i class="fa-regular fa-clock"></i> Turnos trabajados</h2>
         <div class="form-grid">
@@ -343,7 +351,7 @@
         <div id="diagnosticoContenido">Presiona "Calcular" para ver el análisis.</div>
     </div>
 
-    <!-- ===== COMPARADOR CON COLILLA ===== -->
+    <!-- ===== COMPARADOR ===== -->
     <div class="card no-print">
         <h2><i class="fa-regular fa-scale-balanced"></i> Comparar con colilla</h2>
         <div class="form-grid">
@@ -373,13 +381,13 @@
     const VALOR_HORA_BASE = 7958.6591;
 
     // Factores de conversión (basados en colillas reales)
-    const FACTOR_DIURNO = 11.56;      // horas base por turno diurno
-    const FACTOR_NOCTURNO = 9.34;     // horas base por turno nocturno
-    const FACTOR_DESCANSO = 1.15;     // horas de descanso compensado por turno
-    const FACTOR_FESTIVO_D = 12;      // horas festivas diurnas por turno
-    const FACTOR_FESTIVO_N = 12;      // horas festivas nocturnas por turno
+    const FACTOR_DIURNO = 11.56;
+    const FACTOR_NOCTURNO = 9.34;
+    const FACTOR_DESCANSO = 1.15;
+    const FACTOR_FESTIVO_D = 12;
+    const FACTOR_FESTIVO_N = 12;
 
-    // Auxilios fijos (pueden editarse directamente en la tabla más adelante)
+    // Auxilios fijos
     let auxilios = {
         comunicacion: 76356,
         alimentacionN: 157731,
@@ -397,7 +405,6 @@
     const FONDEVIAN = 30952;
     const FONDOPENSIONVE = 3609;
 
-    // Variables de resultado
     let ultimoCalculo = { totalDev: 0, totalDed: 0, neto: 0 };
 
     // ============================================================
@@ -407,28 +414,25 @@
         const mes = parseInt(document.getElementById('mes').value);
         const quincena = document.getElementById('quincena').value;
 
-        // Leer turnos
         const diurnos = parseFloat(document.getElementById('diurnos').value) || 0;
         const nocturnos = parseFloat(document.getElementById('nocturnos').value) || 0;
         const festD = parseFloat(document.getElementById('festivosD').value) || 0;
         const festN = parseFloat(document.getElementById('festivosN').value) || 0;
         const extras = parseFloat(document.getElementById('extras').value) || 0;
 
-        // Calcular horas equivalentes
+        // Horas equivalentes
         const hDiurnas = diurnos * FACTOR_DIURNO;
         const hNocturnas = nocturnos * FACTOR_NOCTURNO;
         const hDescanso = (diurnos + nocturnos + festD + festN) * FACTOR_DESCANSO;
         const hFestD = festD * FACTOR_FESTIVO_D;
         const hFestN = festN * FACTOR_FESTIVO_N;
 
-        // Valores unitarios
         const vHora = VALOR_HORA_BASE;
-        const vNocturna = vHora * 1.35;   // recargo 35%
-        const vFestD = vHora * 1.75;      // dominical/festivo diurno
-        const vFestN = vHora * 2.10;      // dominical/festivo nocturno
-        const vExtra = vHora * 1.55;      // extra diurna (se asume diurna)
+        const vNocturna = vHora * 1.35;
+        const vFestD = vHora * 1.75;
+        const vFestN = vHora * 2.10;
+        const vExtra = vHora * 1.55;
 
-        // Devengados por horas
         const valDiurno = hDiurnas * vHora;
         const valNocturno = hNocturnas * vNocturna;
         const valDescanso = hDescanso * vHora;
@@ -436,24 +440,18 @@
         const valFestN = hFestN * vFestN;
         const valExtra = extras * vExtra;
 
-        // Auxilios
         const totalAux = Object.values(auxilios).reduce((a,b) => a+b, 0);
 
-        // Bonificación semestral (solo si quincena 1 y mes 6 o 12, o si se ingresa manual)
         let bonif = 0;
         if (quincena === '1' && (mes === 6 || mes === 12)) {
-            // Calculamos la bonificación como 50% del valor del turno diurno por cada turno diurno trabajado
-            // Aproximación: 50% de $148.182 = $74.091 por turno diurno
             bonif = diurnos * 74091;
         }
 
         const totalDev = valDiurno + valNocturno + valDescanso + valFestD + valFestN + valExtra + totalAux + bonif;
 
-        // IBC (excluye auxilio de transporte y bonificación)
         let ibc = totalDev - auxilios.transporte - bonif;
         if (ibc < SMMLV) ibc = SMMLV;
 
-        // Deducciones
         const eps = ibc * 0.0338;
         const pension = ibc * 0.0338;
         const cuotaAdmin = totalDev * 0.025;
@@ -464,7 +462,7 @@
             cuotaAdicional = 157043 * 0.33;
         }
 
-        const descAdmision = 29656; // valor fijo, se puede hacer editable
+        const descAdmision = 29656;
         const descCoopantex = 0;
 
         const deducciones = [
@@ -488,7 +486,6 @@
 
         ultimoCalculo = { totalDev, totalDed, neto, ibc, bonif };
 
-        // Construir tabla de devengados
         const devengados = [
             { cod: '001', desc: 'COMP.ORD.BAS D', cant: hDiurnas.toFixed(2), val: valDiurno },
             { cod: '003', desc: 'COMP.ORD.BAS N', cant: hNocturnas.toFixed(2), val: valNocturno },
@@ -507,12 +504,9 @@
 
         renderizarTabla(devengados, deducciones, totalDev, totalDed, neto);
         mostrarDiagnostico(quincena, mes, ibc, cuotaAdicional, bonif);
-        comparar(); // actualiza comparador si ya hay valores
+        comparar();
     }
 
-    // ============================================================
-    //  RENDERIZADO DE TABLA
-    // ============================================================
     function renderizarTabla(devengados, deducciones, totalDev, totalDed, neto) {
         const tbody = document.getElementById('tablaBody');
         let html = '';
@@ -539,9 +533,6 @@
         document.getElementById('neto').innerText = formatoMoneda(neto);
     }
 
-    // ============================================================
-    //  DIAGNÓSTICO
-    // ============================================================
     function mostrarDiagnostico(quincena, mes, ibc, cuotaAdicional, bonif) {
         const div = document.getElementById('diagnosticoContenido');
         let txt = '';
@@ -557,9 +548,6 @@
         div.innerHTML = txt;
     }
 
-    // ============================================================
-    //  COMPARADOR
-    // ============================================================
     function comparar() {
         const realDev = parseFloat(document.getElementById('realDev').value) || 0;
         const realDed = parseFloat(document.getElementById('realDed').value) || 0;
@@ -588,15 +576,12 @@
         `;
     }
 
-    // ============================================================
-    //  UTILIDADES
-    // ============================================================
     function formatoMoneda(v) {
         return '$' + Math.round(v).toLocaleString('es-CO');
     }
 
     // ============================================================
-    //  EXPORTACIÓN (PDF y Excel)
+    //  EXPORTACIÓN
     // ============================================================
     function exportarPDF() {
         if (!ultimoCalculo.totalDev) { alert('Primero calcula la liquidación.'); return; }
@@ -669,9 +654,7 @@
     //  INICIALIZACIÓN
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
-        calcular(); // ejecuta con valores por defecto
-
-        // Registrar Service Worker (si existe)
+        calcular();
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js')
                 .then(() => console.log('✅ Service Worker registrado'))
