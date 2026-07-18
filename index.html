@@ -2,281 +2,255 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="theme-color" content="#004d40">
-    <title>Nómina Centinela · COOPEVIAN C.T.A.</title>
-    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditor de Nómina 2026 - COOPEVIAN C.T.A.</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dexie@3.2.4/dist/dexie.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        /* ===== ESTILOS COMPLETOS ===== */
         :root {
-            --primary: #004d40;
-            --primary-light: #e0f2f1;
-            --primary-accent: #00bfa5;
-            --dark: #1a252f;
-            --bg-body: #f4f7f9;
-            --border-color: #cbd5e1;
-            --danger: #e53e3e;
-            --success: #38a169;
-            --warning: #dd6b20;
+            --primary: #0f5132;
+            --primary-light: #d1e7dd;
+            --secondary: #198754;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --danger: #dc3545;
+            --warning: #ffc107;
             --border-radius: 12px;
-            --shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
         body {
-            background: var(--bg-body);
+            background-color: #f0f4f8;
             color: var(--dark);
-            padding: 16px;
-            padding-bottom: 80px;
             line-height: 1.5;
+            padding: 20px;
         }
 
-        .container { max-width: 1300px; margin: 0 auto; }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
 
-        /* HEADER */
         header {
-            background: linear-gradient(135deg, var(--primary), #00796b);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            padding: 24px;
+            padding: 25px;
             border-radius: var(--border-radius);
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px rgba(0,77,64,0.15);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
-            position: relative;
         }
-        header h1 { font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        header p { font-size: 13px; opacity: 0.9; }
 
-        .btn-imprimir {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.4);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
+        header h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
         }
-        .btn-imprimir:hover { background: rgba(255,255,255,0.28); }
 
-        /* GRID */
-        .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
-        @media (min-width: 992px) { .grid-layout { grid-template-columns: 1.2fr 1.8fr; } }
+        header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
 
-        /* CARDS */
+        .grid-main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 992px) {
+            .grid-main {
+                grid-template-columns: 1.1fr 1.9fr;
+            }
+        }
+
         .card {
             background: white;
-            padding: 22px;
+            padding: 25px;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
             height: fit-content;
         }
+
         .card h2 {
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 18px;
             color: var(--primary);
-            margin-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            gap: 10px;
         }
 
-        /* FORMULARIOS */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .form-group-full { grid-column: span 2; }
-        .form-group { margin-bottom: 6px; }
-        .form-group label { display: block; font-weight: 700; font-size: 11px; color: #4a5568; margin-bottom: 4px; }
+        .section-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 15px;
+            margin-top: -10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group-full {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #495057;
+        }
+
         .form-group input, .form-group select {
             width: 100%;
-            padding: 9px 11px;
-            border: 1.5px solid var(--border-color);
+            padding: 10px;
+            border: 1px solid #ced4da;
             border-radius: 6px;
-            font-size: 13px;
-            background: #fafbfc;
-            transition: 0.2s;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-accent);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0,191,165,0.12);
+            font-size: 14px;
+            background-color: #fff;
         }
 
-        /* TABS */
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.25);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: var(--primary-light) !important;
+            color: var(--primary);
+        }
+
+        .deduccion-row {
+            color: #b02a37;
+        }
+
+        .devengado-row {
+            color: #0f5132;
+        }
+
+        /* Estilo para pestañas de comparación */
         .tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 18px;
-            background: #e2e8f0;
-            padding: 5px;
-            border-radius: 8px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #dee2e6;
         }
+
         .tab-button {
-            flex: 1;
-            padding: 9px;
+            padding: 10px 20px;
             background: none;
             border: none;
             cursor: pointer;
-            font-weight: 700;
-            color: #4a5568;
-            font-size: 12.5px;
-            border-radius: 6px;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            font-weight: bold;
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+            font-size: 14px;
         }
+
         .tab-button.active {
-            background: white;
             color: var(--primary);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        /* TABLAS */
-        .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #e2e8f0; }
-        table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-        th {
-            background: #f8fafc;
-            font-weight: 700;
-            color: #4a5568;
-            text-transform: uppercase;
-            font-size: 11px;
-            padding: 10px 12px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; color: #2d3748; }
-        .text-right { text-align: right; }
-        .text-center { text-align: center; }
-
-        .row-devengado { background: #f6fcf9; color: #1a5235; }
-        .row-deduccion { background: #fffafb; color: #822727; }
-        .total-row { font-weight: 700; background: var(--primary-light) !important; color: var(--primary); }
-        .neto-row {
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), #00796b) !important;
-            color: white !important;
-        }
-        .neto-row td { color: white !important; }
-
-        .input-editable-cell {
-            width: 80px;
-            padding: 4px 6px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 4px;
-            font-size: 12px;
-            text-align: center;
-            font-weight: 600;
-            background: white;
-        }
-        .input-editable-cell:focus {
-            outline: none;
-            border-color: var(--primary-accent);
-            box-shadow: 0 0 0 2px rgba(0,191,165,0.1);
+            border-bottom-color: var(--primary);
         }
 
-        /* ALERTAS */
-        .alert-panel {
-            background: #fffaf0;
-            color: #7b341e;
-            border: 1px solid #feebc8;
-            padding: 16px;
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .alert-zone {
+            background-color: #fff3cd;
+            color: #664d03;
+            border: 1px solid #ffecb5;
+            padding: 18px;
             border-radius: var(--border-radius);
-            margin-top: 24px;
+            margin-top: 25px;
         }
-        .alert-panel h3 { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 
-        .diff-pos { color: var(--success); font-weight: 700; }
-        .diff-neg { color: var(--danger); font-weight: 700; }
-
-        /* BOTONES */
-        .action-bar {
+        .alert-zone h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-        }
-        .btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #003d33; transform: translateY(-1px); }
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #2f855a; }
-        .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
-        .btn-outline:hover { background: var(--primary-light); }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #c53030; }
 
-        .footer-nota { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 20px; }
-
-        /* RESPONSIVE */
-        @media (max-width: 600px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .form-group-full { grid-column: span 1; }
-            .tabs { flex-direction: column; }
-            .tab-button { justify-content: center; }
-            header h1 { font-size: 20px; flex-wrap: wrap; }
-            .action-bar { flex-direction: column; }
-            .btn { justify-content: center; }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 4px;
+            text-transform: uppercase;
         }
 
-        /* DARK MODE */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-body: #1a1a2e;
-                --dark: #e9ecef;
-                --border-color: #2d3a5e;
-            }
-            .card { background: #16213e; border-color: #2d3a5e; }
-            .table-container { border-color: #2d3a5e; }
-            th { background: #0f1a2e; color: #a0aec0; }
-            td { border-color: #2d3a5e; color: #e2e8f0; }
-            .row-devengado { background: #1a2e2a; }
-            .row-deduccion { background: #2e1a1a; }
-            .total-row { background: #1a3a3a !important; }
-            .form-group input, .form-group select { background: #0f0f1f; color: #e9ecef; border-color: #2d3a5e; }
-            .input-editable-cell { background: #0f0f1f; color: #e9ecef; border-color: #2d3a5e; }
-            .tabs { background: #0f0f1f; }
-            .tab-button { color: #a0aec0; }
-            .tab-button.active { background: #16213e; color: var(--primary-accent); }
-            .alert-panel { background: #2d1f0a; color: #fbd38d; border-color: #744210; }
+        .badge-devengado {
+            background-color: #d1e7dd;
+            color: #0f5132;
         }
 
-        /* PRINT */
-        @media print {
-            body { background: white; padding: 0; }
-            .btn-imprimir, .tabs, .card:first-child, .footer-nota, .action-bar { display: none !important; }
-            .grid-layout { grid-template-columns: 1fr !important; }
-            .card { box-shadow: none; border: 1px solid #ccc; }
-            .tab-content { display: block !important; }
-            .input-editable-cell { border: none; background: none; font-weight: 700; }
+        .badge-deduccion {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .diff-pos {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .diff-neg {
+            color: #dc3545;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -284,684 +258,505 @@
 
 <div class="container">
     <header>
-        <h1><i class="fa-solid fa-scale-balanced"></i> Nómina Centinela</h1>
-        <p>Liquidación interactiva para asociados COOPEVIAN C.T.A. · 2026</p>
-        <button class="btn-imprimir" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir / PDF</button>
+        <h1><i class="fa-solid fa-shield-halved"></i> Liquidador de Nómina de Precisión - COOPEVIAN</h1>
+        <p>Modelo Integrado con Colillas de Pago Reales de Junio 2026 - Asociado Darwin Montalvo</p>
     </header>
 
-    <div class="grid-layout">
-        <!-- ===== PANEL DE TURNOS Y PARÁMETROS ===== -->
+    <div class="grid-main">
+        <!-- FORMULARIO DE ENTRADA -->
         <div class="card">
-            <h2><i class="fa-solid fa-calendar-week"></i> Turnos y Parámetros</h2>
+            <h2><i class="fa-solid fa-pen-to-square"></i> Variables del Periodo</h2>
+            <p class="section-subtitle">Introduce los datos de tus colillas o turnos reales para procesar.</p>
 
-            <!-- Agregar turno -->
-            <div class="form-grid" style="margin-bottom: 16px;">
+            <div class="form-grid">
                 <div class="form-group">
-                    <label for="fechaTurno">Fecha</label>
-                    <input type="date" id="fechaTurno">
-                </div>
-                <div class="form-group">
-                    <label for="tipoTurno">Tipo</label>
-                    <select id="tipoTurno">
-                        <option value="diurno">Diurno</option>
-                        <option value="nocturno">Nocturno</option>
-                        <option value="festivoD">Festivo Diurno</option>
-                        <option value="festivoN">Festivo Nocturno</option>
-                        <option value="descanso">Descanso</option>
+                    <label for="quincena">Quincena:</label>
+                    <select id="quincena" onchange="cargarPredeterminados(); calcularNomina();">
+                        <option value="1">1ª Quincena (01 - 15 Jun)</option>
+                        <option value="2" selected>2ª Quincena (16 - 30 Jun)</option>
                     </select>
                 </div>
+
                 <div class="form-group">
-                    <label for="horasBase">Horas Base</label>
-                    <input type="number" id="horasBase" value="12" step="0.5" min="0">
+                    <label for="mes">Mes:</label>
+                    <select id="mes" onchange="calcularNomina()">
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6" selected>Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
                 </div>
+
+                <!-- HORAS TRABAJADAS -->
                 <div class="form-group">
-                    <label for="horasExtra">Horas Extra</label>
-                    <input type="number" id="horasExtra" value="0" step="0.5" min="0">
+                    <label for="horasBasicasD">Horas Diurnas (Cpto 001):</label>
+                    <input type="number" step="0.01" id="horasBasicasD" value="69.40" oninput="calcularNomina()">
                 </div>
-                <div class="form-group-full">
-                    <button class="btn btn-primary" style="width:100%;" onclick="agregarTurno()">
-                        <i class="fa-solid fa-plus"></i> Agregar Turno
-                    </button>
+
+                <div class="form-group">
+                    <label for="horasBasicasN">Horas Nocturnas (Cpto 003):</label>
+                    <input type="number" step="0.01" id="horasBasicasN" value="18.68" oninput="calcularNomina()">
+                </div>
+
+                <div class="form-group">
+                    <label for="horasDescansos">Descansos Comp. (Cpto 080):</label>
+                    <input type="number" step="0.01" id="horasDescansos" value="13.91" oninput="calcularNomina()">
+                </div>
+
+                <div class="form-group">
+                    <label for="horasExtraSup1">Extra Sup. 1 (Cpto 091):</label>
+                    <input type="number" step="0.01" id="horasExtraSup1" value="6.67" oninput="calcularNomina()">
+                </div>
+
+                <div class="form-group">
+                    <label for="horasExtraSup2">Extra Sup. 2 (Cpto 092):</label>
+                    <input type="number" step="0.01" id="horasExtraSup2" value="1.80" oninput="calcularNomina()">
+                </div>
+
+                <div class="form-group">
+                    <label for="horasFestivasDiurnas">Festivas Diurnas (Cpto 094):</label>
+                    <input type="number" step="0.01" id="horasFestivasDiurnas" value="36.00" oninput="calcularNomina()">
+                </div>
+
+                <div class="form-group">
+                    <label for="horasFestivasNocturnas">Festivas Noct. (Cpto 095):</label>
+                    <input type="number" step="0.01" id="horasFestivasNocturnas" value="0.00" oninput="calcularNomina()">
+                </div>
+
+                <div class="form-group">
+                    <label for="compExtraordinaria">Comp. Extra (Cpto 081):</label>
+                    <input type="number" id="compExtraordinaria" value="529196" oninput="calcularNomina()">
+                </div>
+
+                <!-- DESCUENTO DE ADMISIÓN REAL COBRADO -->
+                <div class="form-group">
+                    <label for="descuentoAdmision">Descto. Admisión Fijo (550):</label>
+                    <input type="number" id="descuentoAdmision" value="29656" oninput="calcularNomina()">
+                </div>
+
+                <div class="form-group">
+                    <label for="bonifSemestral">Bonif. Semestral (049):</label>
+                    <input type="number" id="bonifSemestral" value="0" oninput="calcularNomina()">
                 </div>
             </div>
 
-            <!-- Lista de turnos -->
-            <div class="table-container" style="max-height: 300px; overflow-y: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Tipo</th>
-                            <th>Base</th>
-                            <th>Extra</th>
-                            <th style="width:50px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaTurnos">
-                        <!-- Inyectado por JS -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Parámetros generales -->
-            <div style="margin-top: 16px;">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="mes">Mes</label>
-                        <select id="mes" onchange="calcularNomina()">
-                            <option value="1">Enero</option><option value="2">Febrero</option>
-                            <option value="3">Marzo</option><option value="4">Abril</option>
-                            <option value="5">Mayo</option><option value="6" selected>Junio</option>
-                            <option value="7">Julio</option><option value="8">Agosto</option>
-                            <option value="9">Septiembre</option><option value="10">Octubre</option>
-                            <option value="11">Noviembre</option><option value="12">Diciembre</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="quincena">Quincena</label>
-                        <select id="quincena" onchange="calcularNomina()">
-                            <option value="1">1ª (01-15)</option>
-                            <option value="2" selected>2ª (16-30/31)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="regimenPension">Pensión</label>
-                        <select id="regimenPension" onchange="calcularNomina()">
-                            <option value="PORVENIR">PORVENIR</option>
-                            <option value="COLPENSIONES">COLPENSIONES</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="descuentoAdmision">Admisión (550)</label>
-                        <input type="number" id="descuentoAdmision" value="29656" oninput="calcularNomina()">
-                    </div>
-                    <div class="form-group">
-                        <label for="descuentoCoopantex">COOPANTEX (661)</label>
-                        <input type="number" id="descuentoCoopantex" value="0" oninput="calcularNomina()">
-                    </div>
-                    <div class="form-group">
-                        <label for="bonificacion">Bonificación (049)</label>
-                        <input type="number" id="bonificacion" value="0" oninput="calcularNomina()">
-                    </div>
-                </div>
-                <div class="action-bar">
-                    <button class="btn btn-success" onclick="guardarLiquidacion()"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-                    <button class="btn btn-outline" onclick="exportarPDF()"><i class="fa-solid fa-file-pdf"></i> PDF</button>
-                    <button class="btn btn-outline" onclick="exportarExcel()"><i class="fa-solid fa-file-excel"></i> Excel</button>
-                    <button class="btn btn-danger" onclick="limpiarTurnos()"><i class="fa-solid fa-trash"></i> Limpiar Turnos</button>
-                </div>
+            <div style="margin-top: 15px; padding: 12px; background-color: #e8f5e9; border-radius: 6px; font-size: 12.5px; color: #1b5e20;">
+                <i class="fa-solid fa-circle-check"></i> El valor por hora básica está parametrizado de manera exacta en <strong>$7.958,6591</strong> según el básico de $1.750.905.
             </div>
         </div>
 
-        <!-- ===== PANEL DE RESULTADOS ===== -->
+        <!-- LIQUIDACIÓN DETALLADA -->
         <div class="card">
             <div class="tabs">
-                <button class="tab-button active" onclick="verPestana('calculo', this)"><i class="fa-solid fa-receipt"></i> Liquidador</button>
-                <button class="tab-button" onclick="verPestana('comparar', this)"><i class="fa-solid fa-scale-balanced"></i> Comparador</button>
-                <button class="tab-button" onclick="verPestana('historial', this)"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
+                <button class="tab-button active" onclick="switchTab('calculadora')"><i class="fa-solid fa-receipt"></i> Detalle de Liquidación</button>
+                <button class="tab-button" onclick="switchTab('comparador')"><i class="fa-solid fa-scale-balanced"></i> Comparar con Colilla Real</button>
             </div>
 
-            <!-- LIQUIDADOR -->
-            <div id="pestana-calculo" class="tab-content active">
-                <p style="font-size:11.5px; color:#64748b; margin-bottom:12px;">
-                    <i class="fa-solid fa-info-circle"></i> Edita horas o auxilios directamente en la tabla.
-                </p>
-                <div class="table-container">
+            <!-- CONTENIDO PESTAÑA DETALLE -->
+            <div id="tab-calculadora" class="tab-content active">
+                <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
                                 <th>Cpto</th>
                                 <th>Concepto</th>
-                                <th class="text-center" style="width:100px;">Cantidad</th>
-                                <th class="text-right">Devengos</th>
+                                <th class="text-center">Horas/Cant</th>
+                                <th class="text-right">Devengados</th>
                                 <th class="text-right">Deducciones</th>
                             </tr>
                         </thead>
-                        <tbody id="tablaResultados">
-                            <!-- Inyectado por JS -->
+                        <tbody id="tablaConceptos">
+                            <!-- Inyección dinámica de filas desde JS -->
                         </tbody>
                         <tfoot>
                             <tr class="total-row">
                                 <td colspan="3">SUBTOTALES</td>
-                                <td class="text-right" id="subtotalDev">$0</td>
-                                <td class="text-right" id="subtotalDed">$0</td>
+                                <td class="text-right" id="subDevengados">$0</td>
+                                <td class="text-right" id="subDeducciones">$0</td>
                             </tr>
-                            <tr class="neto-row">
-                                <td colspan="3">NETO QUINCENAL</td>
-                                <td colspan="2" class="text-right" id="netoEstimado" style="font-size:14px;">$0</td>
+                            <tr class="total-row" style="background-color: var(--primary); color: white;">
+                                <td colspan="3" style="color: white; font-size: 15px;">NETO ESTIMADO DE QUINCENA</td>
+                                <td colspan="2" class="text-right" id="totalNeto" style="color: white; font-size: 16px;">$0</td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
 
-            <!-- COMPARADOR -->
-            <div id="pestana-comparar" class="tab-content">
-                <div class="form-grid" style="margin-bottom:15px;">
+            <!-- CONTENIDO PESTAÑA COMPARADOR -->
+            <div id="tab-comparador" class="tab-content">
+                <p class="section-subtitle">Digita los totales impresos en tu colilla física para auditar diferencias:</p>
+                
+                <div class="form-grid" style="margin-bottom: 20px;">
                     <div class="form-group">
-                        <label for="realDevengado">Total Devengados Colilla</label>
-                        <input type="number" id="realDevengado" value="2006431" oninput="comparar()">
+                        <label for="colillaDevengado">Total Devengado Colilla:</label>
+                        <input type="number" id="colillaDevengado" value="2006431" oninput="compararTotales()">
                     </div>
                     <div class="form-group">
-                        <label for="realDeducciones">Total Deducciones Colilla</label>
-                        <input type="number" id="realDeducciones" value="412808" oninput="comparar()">
+                        <label for="colillaDeduccion">Total Deducciones Colilla:</label>
+                        <input type="number" id="colillaDeduccion" value="412808" oninput="compararTotales()">
                     </div>
                 </div>
-                <div class="table-container">
-                    <table>
+
+                <div class="table-responsive">
+                    <table style="border: 1px solid #dee2e6;">
                         <thead>
-                            <tr><th>Resultado</th><th class="text-right">Simulado</th><th class="text-right">Colilla Real</th><th class="text-right">Diferencia</th></tr>
+                            <tr style="background-color: #eef2f5;">
+                                <th>Métrica</th>
+                                <th class="text-right">Cálculo del Aplicativo</th>
+                                <th class="text-right">Colilla Física</th>
+                                <th class="text-right">Diferencia</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr><td><strong>Devengados</strong></td><td class="text-right" id="teoricoDev">$0</td><td class="text-right" id="colillaDev">$0</td><td class="text-right" id="diferenciaDev">$0</td></tr>
-                            <tr><td><strong>Deducciones</strong></td><td class="text-right" id="teoricoDed">$0</td><td class="text-right" id="colillaDed">$0</td><td class="text-right" id="diferenciaDed">$0</td></tr>
-                            <tr class="total-row"><td><strong>Neto</strong></td><td class="text-right" id="teoricoNet">$0</td><td class="text-right" id="colillaNet">$0</td><td class="text-right" id="diferenciaNet">$0</td></tr>
+                            <tr>
+                                <td><strong>Total Devengados</strong></td>
+                                <td class="text-right" id="cmpCalcDev">$0</td>
+                                <td class="text-right" id="cmpRealDev">$0</td>
+                                <td class="text-right" id="cmpDiffDev">$0</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Deducciones</strong></td>
+                                <td class="text-right" id="cmpCalcDed">$0</td>
+                                <td class="text-right" id="cmpRealDed">$0</td>
+                                <td class="text-right" id="cmpDiffDed">$0</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>Neto Final</strong></td>
+                                <td class="text-right" id="cmpCalcNet">$0</td>
+                                <td class="text-right" id="cmpRealNet">$0</td>
+                                <td class="text-right" id="cmpDiffNet">$0</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- HISTORIAL -->
-            <div id="pestana-historial" class="tab-content">
-                <div id="historialList"><p style="color:#64748b;"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</p></div>
-                <button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="cargarHistorial()"><i class="fa-solid fa-rotate"></i> Recargar</button>
-            </div>
         </div>
     </div>
 
-    <!-- DIAGNÓSTICO -->
-    <div class="alert-panel">
-        <h3><i class="fa-solid fa-circle-exclamation"></i> Diagnóstico de Cotizaciones e IBC</h3>
-        <div id="auditoriaLog">Cargando datos...</div>
+    <!-- PANEL DE AUDITORÍA DINÁMICA -->
+    <div class="alert-zone" id="panelAuditoria">
+        <h3><i class="fa-solid fa-circle-exclamation"></i> Diagnóstico y Auditoría de Novedades:</h3>
+        <div id="auditoriaDetalle">
+            Cargando auditoría inteligente de aportes, cuotas y topes de seguridad social...
+        </div>
     </div>
-
-    <p class="footer-nota">Nómina Centinela · Herramienta de apoyo, no reemplaza la colilla oficial de COOPEVIAN C.T.A.</p>
 </div>
 
 <script>
-    // ============================================================
-    //  CONFIGURACIÓN MAESTRA 2026
-    // ============================================================
+    // Parámetros maestros según colillas de pago COOPEVIAN 2026
     const SMMLV_2026 = 1750905;
     const VALOR_HORA_BASICA = 7958.6591;
 
-    // Deducciones fijas quincenales
-    const APORTES_SOCIALES_Q = 126940;
-    const FONDO_INCAPACIDADES_Q = 35018;
+    // Auxilios vigentes quincenales
+    const AUX_COMUNICACION = 76356;
+    const AUX_ALIMENTACION = 157731;
+    const AUX_ALIMENTACION_EXTRA = 36804;
+    const AUX_MOVILIZACION = 90515;
+    const AUX_BIENESTAR = 48458;
+    const AUX_TRANSPORTE_COOP = 118160;
+
+    // Valores fijos de descuentos de Ley y Estatutos
+    const APORTES_SOCIALES_Q = 126940; // Art 80 Estatuto ($253.881 / 2)
+    const FONDO_INCAPACIDADES_Q = 35018; // Art 13 Estatuto ($70.036 / 2)
+
+    // Valores fijos quincenales de descuentos internos
     const POLIZA_COLECTIVA = 5750;
-    const SOLUCION_VIVIENDA = 29697;   // solo 1ª quincena
+    const SOLUCION_VIVIENDA = 29697; // Solo aplica en la 1ª quincena
     const FUN_VIVIR = 12450;
     const FONDEVIAN = 30952;
     const FONDOPENSIONVE = 3609;
 
-    // ============================================================
-    //  ESTADO GLOBAL
-    // ============================================================
-    let turnos = [];
-    let auxiliosEditados = {
-        auxComunicacion: 76356,
-        auxAlimentacionN: 157731,
-        auxAlimentacionE: 36804,
-        auxMovilizacion: 90515,
-        auxBienestar: 48458,
-        auxTransporteCoop: 118160
+    // Predeterminados para agilizar la navegación de Darwin
+    const predeterminados = {
+        1: {
+            horasBasicasD: 44.04,
+            horasBasicasN: 44.04,
+            horasDescansos: 13.54,
+            horasExtraSup1: 4.24,
+            horasExtraSup2: 4.23,
+            horasFestivasDiurnas: 24.00,
+            horasFestivasNocturnas: 24.00, // Sumatoria del recibo adicional de la 1a q.
+            compExtraordinaria: 495900,
+            bonifSemestral: 1643941,
+            descuentoAdmision: 29656,
+            colillaDevengado: 3685866, // Recibo principal + recibo adicional festivo
+            colillaDeduccion: 442086
+        },
+        2: {
+            horasBasicasD: 69.40,
+            horasBasicasN: 18.68,
+            horasDescansos: 13.91,
+            horasExtraSup1: 6.67,
+            horasExtraSup2: 1.80,
+            horasFestivasDiurnas: 36.00,
+            horasFestivasNocturnas: 0.00,
+            compExtraordinaria: 529196,
+            bonifSemestral: 0,
+            descuentoAdmision: 29656,
+            colillaDevengado: 2006431,
+            colillaDeduccion: 412808
+        }
     };
-    let ultimoCalculo = { totalDevengado: 0, totalDeducciones: 0, neto: 0 };
 
-    // ============================================================
-    //  MANEJO DE TURNOS
-    // ============================================================
-    function agregarTurno() {
-        const fecha = document.getElementById('fechaTurno').value;
-        const tipo = document.getElementById('tipoTurno').value;
-        const horasBase = parseFloat(document.getElementById('horasBase').value) || 0;
-        const horasExtra = parseFloat(document.getElementById('horasExtra').value) || 0;
-
-        if (!fecha) { alert('Selecciona una fecha.'); return; }
-        if (horasBase === 0 && horasExtra === 0) { alert('Debe haber al menos horas base o extra.'); return; }
-
-        turnos.push({ fecha, tipo, horasBase, horasExtra });
-        renderizarTurnos();
-        calcularNomina();
-        // Limpiar campos
-        document.getElementById('horasBase').value = 12;
-        document.getElementById('horasExtra').value = 0;
-    }
-
-    function eliminarTurno(index) {
-        turnos.splice(index, 1);
-        renderizarTurnos();
-        calcularNomina();
-    }
-
-    function limpiarTurnos() {
-        if (turnos.length === 0) return;
-        if (confirm('¿Eliminar todos los turnos?')) {
-            turnos = [];
-            renderizarTurnos();
-            calcularNomina();
-        }
-    }
-
-    function renderizarTurnos() {
-        const tbody = document.getElementById('tablaTurnos');
-        if (turnos.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="text-center" style="color:#94a3b8;">No hay turnos registrados</td></tr>`;
-            return;
-        }
-        let html = '';
-        turnos.forEach((t, i) => {
-            const tipoLabel = { diurno:'Diurno', nocturno:'Nocturno', festivoD:'Festivo D', festivoN:'Festivo N', descanso:'Descanso' }[t.tipo] || t.tipo;
-            html += `<tr>
-                <td>${t.fecha}</td>
-                <td>${tipoLabel}</td>
-                <td class="text-center">${t.horasBase}</td>
-                <td class="text-center">${t.horasExtra}</td>
-                <td><button class="btn btn-danger" style="padding:2px 8px;font-size:11px;" onclick="eliminarTurno(${i})"><i class="fa-solid fa-xmark"></i></button></td>
-            </tr>`;
-        });
-        tbody.innerHTML = html;
-    }
-
-    // ============================================================
-    //  CÁLCULO DE NÓMINA
-    // ============================================================
-    function calcularNomina() {
-        const mes = parseInt(document.getElementById('mes').value);
+    function cargarPredeterminados() {
         const q = document.getElementById('quincena').value;
-
-        // Acumular horas por tipo
-        let horas = { diurno:0, nocturno:0, festivoD:0, festivoN:0, extraD:0, extraN:0 };
-        turnos.forEach(t => {
-            const base = t.horasBase || 0;
-            const extra = t.horasExtra || 0;
-            if (t.tipo === 'diurno') { horas.diurno += base; horas.extraD += extra; }
-            else if (t.tipo === 'nocturno') { horas.nocturno += base; horas.extraN += extra; }
-            else if (t.tipo === 'festivoD') { horas.festivoD += base; horas.extraD += extra; }
-            else if (t.tipo === 'festivoN') { horas.festivoN += base; horas.extraN += extra; }
-            // descanso no genera horas base
-        });
-
-        // Valores unitarios
-        const vHoraDiurna = VALOR_HORA_BASICA;
-        const vHoraNocturna = VALOR_HORA_BASICA * 1.35;  // recargo nocturno 35%
-        const vHoraFestivaD = VALOR_HORA_BASICA * 1.75; // dominical/festivo diurno
-        const vHoraFestivaN = VALOR_HORA_BASICA * 2.10; // dominical/festivo nocturno
-        const vExtraD = VALOR_HORA_BASICA * 1.55;       // extra diurna
-        const vExtraN = VALOR_HORA_BASICA * 1.90;       // extra nocturna
-
-        // Devengados
-        const valDiurno = horas.diurno * vHoraDiurna;
-        const valNocturno = horas.nocturno * vHoraNocturna;
-        const valFestivoD = horas.festivoD * vHoraFestivaD;
-        const valFestivoN = horas.festivoN * vHoraFestivaN;
-        const valExtraD = horas.extraD * vExtraD;
-        const valExtraN = horas.extraN * vExtraN;
-
-        // Auxilios
-        const auxCom = auxiliosEditados.auxComunicacion;
-        const auxAlimN = auxiliosEditados.auxAlimentacionN;
-        const auxAlimE = auxiliosEditados.auxAlimentacionE;
-        const auxMov = auxiliosEditados.auxMovilizacion;
-        const auxBien = auxiliosEditados.auxBienestar;
-        const auxTrans = auxiliosEditados.auxTransporteCoop;
-        const bonif = parseFloat(document.getElementById('bonificacion').value) || 0;
-
-        const totalDevengado = valDiurno + valNocturno + valFestivoD + valFestivoN + valExtraD + valExtraN +
-                               auxCom + auxAlimN + auxAlimE + auxMov + auxBien + auxTrans + bonif;
-
-        // IBC (excluye auxilio de transporte y bonificación)
-        let ibc = totalDevengado - auxTrans - bonif;
-        if (ibc < SMMLV_2026) ibc = SMMLV_2026;
-
-        // Deducciones
-        const eps = ibc * 0.0338;
-        const pension = ibc * 0.0338;
-        const cuotaAdmin = totalDevengado * 0.025;
-        let cuotaAdicional = 0;
-        const mesesAdicional = [1,3,5,7,8,10,12];
-        if (mesesAdicional.includes(mes)) {
-            cuotaAdicional = 157043 * 0.33;
-        }
-        const descAdmision = parseFloat(document.getElementById('descuentoAdmision').value) || 0;
-        const descCoopantex = parseFloat(document.getElementById('descuentoCoopantex').value) || 0;
-
-        let deducciones = [
-            { cod: '505', desc: 'POLIZA COLECTI', val: POLIZA_COLECTIVA },
-            { cod: '550', desc: 'ADMISION', val: descAdmision },
-            { cod: '551', desc: 'EPS SURA', val: eps },
-            { cod: '554', desc: 'FONDO DE INCAP', val: FONDO_INCAPACIDADES_Q },
-            { cod: '555', desc: 'APORTES SOCIAL', val: APORTES_SOCIALES_Q },
-            { cod: '557', desc: 'ADMINISTRACION', val: cuotaAdmin },
-            { cod: '582', desc: 'FUN.VIVIR', val: FUN_VIVIR },
-            { cod: '677', desc: 'FONDEVIAN', val: FONDEVIAN },
-            { cod: '679', desc: 'FONDOPENSIONVE', val: FONDOPENSIONVE }
-        ];
-
-        const regimen = document.getElementById('regimenPension').value;
-        deducciones.push({ cod: '567', desc: regimen, val: pension });
-
-        if (descCoopantex > 0) deducciones.push({ cod: '661', desc: 'COOPANTEX', val: descCoopantex });
-        if (q === '1') deducciones.push({ cod: '519', desc: 'SOLUCION DE VI', val: SOLUCION_VIVIENDA });
-        if (cuotaAdicional > 0) deducciones.push({ cod: '558', desc: 'ADMIN. ADICIONAL (33%)', val: cuotaAdicional });
-
-        const totalDeducciones = deducciones.reduce((a, d) => a + d.val, 0);
-        const neto = totalDevengado - totalDeducciones;
-
-        ultimoCalculo = { totalDevengado, totalDeducciones, neto };
-
-        // Construir devengados para la tabla
-        let devengados = [
-            { cod: '001', desc: 'COMP.ORD.BAS D', cant: horas.diurno, val: valDiurno, editable: true, key: 'diurno' },
-            { cod: '003', desc: 'COMP.ORD.BAS N', cant: horas.nocturno, val: valNocturno, editable: true, key: 'nocturno' },
-            { cod: '010', desc: 'FESTIVO D', cant: horas.festivoD, val: valFestivoD, editable: true, key: 'festivoD' },
-            { cod: '011', desc: 'FESTIVO N', cant: horas.festivoN, val: valFestivoN, editable: true, key: 'festivoN' },
-            { cod: '091', desc: 'EXTRA D', cant: horas.extraD, val: valExtraD, editable: true, key: 'extraD' },
-            { cod: '092', desc: 'EXTRA N', cant: horas.extraN, val: valExtraN, editable: true, key: 'extraN' },
-            { cod: '040', desc: 'AUX.COMUNICACI', cant: '—', val: auxCom, editable: false, key: 'auxComunicacion' },
-            { cod: '045', desc: 'AUX.ALIMENTACI N', cant: '—', val: auxAlimN, editable: false, key: 'auxAlimentacionN' },
-            { cod: '047', desc: 'AUX.ALIMENTACI E', cant: '—', val: auxAlimE, editable: false, key: 'auxAlimentacionE' },
-            { cod: '048', desc: 'AUX.MOVILIZACI', cant: '—', val: auxMov, editable: false, key: 'auxMovilizacion' },
-            { cod: '082', desc: 'AUX.TRANSPORTE', cant: '—', val: auxTrans, editable: false, key: 'auxTransporteCoop' },
-            { cod: '089', desc: 'AUX.BIENESTAR', cant: '—', val: auxBien, editable: false, key: 'auxBienestar' }
-        ];
-        if (bonif > 0) devengados.push({ cod: '049', desc: 'BONIF.SEMESTRA', cant: '—', val: bonif, editable: false, key: null });
-
-        renderizarResultados(devengados, deducciones, totalDevengado, totalDeducciones, neto);
-        comparar();
-        generarDiagnostico(q, mes, ibc, cuotaAdicional, bonif, regimen);
+        const data = predeterminados[q];
+        
+        document.getElementById('horasBasicasD').value = data.horasBasicasD;
+        document.getElementById('horasBasicasN').value = data.horasBasicasN;
+        document.getElementById('horasDescansos').value = data.horasDescansos;
+        document.getElementById('horasExtraSup1').value = data.horasExtraSup1;
+        document.getElementById('horasExtraSup2').value = data.horasExtraSup2;
+        document.getElementById('horasFestivasDiurnas').value = data.horasFestivasDiurnas;
+        document.getElementById('horasFestivasNocturnas').value = data.horasFestivasNocturnas;
+        document.getElementById('compExtraordinaria').value = data.compExtraordinaria;
+        document.getElementById('bonifSemestral').value = data.bonifSemestral;
+        document.getElementById('descuentoAdmision').value = data.descuentoAdmision;
+        document.getElementById('colillaDevengado').value = data.colillaDevengado;
+        document.getElementById('colillaDeduccion').value = data.colillaDeduccion;
     }
 
-    // ============================================================
-    //  RENDERIZADO DE RESULTADOS (tabla)
-    // ============================================================
-    function renderizarResultados(devengados, deducciones, totalDev, totalDed, neto) {
-        const tbody = document.getElementById('tablaResultados');
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        event.currentTarget.classList.add('active');
+        document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    function formatoMoneda(valor) {
+        return '$' + Math.round(valor).toLocaleString('es-CO');
+    }
+
+    function calcularNomina() {
+        const q = document.getElementById('quincena').value;
+        const mes = parseInt(document.getElementById('mes').value);
+
+        // Variables capturadas del panel
+        const hBasicaD = parseFloat(document.getElementById('horasBasicasD').value) || 0;
+        const hBasicaN = parseFloat(document.getElementById('horasBasicasN').value) || 0;
+        const hDescansos = parseFloat(document.getElementById('horasDescansos').value) || 0;
+        const hExtraSup1 = parseFloat(document.getElementById('horasExtraSup1').value) || 0;
+        const hExtraSup2 = parseFloat(document.getElementById('horasExtraSup2').value) || 0;
+        const hFestivasD = parseFloat(document.getElementById('horasFestivasDiurnas').value) || 0;
+        const hFestivasN = parseFloat(document.getElementById('horasFestivasNocturnas').value) || 0;
+        
+        const compExtraordinaria = parseFloat(document.getElementById('compExtraordinaria').value) || 0;
+        const bonifSemestral = parseFloat(document.getElementById('bonifSemestral').value) || 0;
+        const desctoAdmision = parseFloat(document.getElementById('descuentoAdmision').value) || 0;
+
+        // --- CÁLCULO EXACTO DE DEVENGADOS ---
+        // Se multiplica el valor de la hora base por los recargos según el concepto
+        const valBasicoD = hBasicaD * VALOR_HORA_BASICA;
+        const valBasicoN = hBasicaN * VALOR_HORA_BASICA;
+        const valDescansos = hDescansos * VALOR_HORA_BASICA;
+        
+        // Recargo extra superior 1 (Cpto 091 - con factor 1.55 aproximado sobre el básico)
+        const valExtraSup1 = hExtraSup1 * (VALOR_HORA_BASICA * 1.55);
+        // Recargo extra superior 2 (Cpto 092 - con factor 1.74 aproximado sobre el básico)
+        const valExtraSup2 = hExtraSup2 * (VALOR_HORA_BASICA * 1.738);
+        
+        // Recargo dominical / festivo diurno (Cpto 094 - factor 0.105 sobre el valor hora)
+        const valFestivoD = hFestivasD * (VALOR_HORA_BASICA * 0.1055);
+        // Recargo festivo nocturno (Cpto 095 - factor 0.138 sobre el valor hora)
+        const valFestivoN = hFestivasN * (VALOR_HORA_BASICA * 0.1383);
+
+        // Construcción de Devengados
+        let devengos = [
+            { cod: '001', nombre: 'COMP.ORD.BAS D', horas: hBasicaD, val: valBasicoD },
+            { cod: '003', nombre: 'COMP.ORD.BAS N', horas: hBasicaN, val: valBasicoN },
+            { cod: '040', nombre: 'AUX.COMUNICACI', horas: '-', val: AUX_COMUNICACION },
+            { cod: '045', nombre: 'AUX.ALIMENTACI (N)', horas: '-', val: AUX_ALIMENTACION },
+            { cod: '047', nombre: 'AUX.ALIMENTACI (E)', horas: '-', val: AUX_ALIMENTACION_EXTRA },
+            { cod: '048', nombre: 'AUX.MOVILIZACI', horas: '-', val: AUX_MOVILIZACION },
+            { cod: '080', nombre: 'DESCANSOS COMP', horas: hDescansos, val: valDescansos },
+            { cod: '081', nombre: 'COMP.EXTRAORDI', horas: '-', val: compExtraordinaria },
+            { cod: '082', nombre: 'AUXILIO DE TRA', horas: '-', val: AUX_TRANSPORTE_COOP },
+            { cod: '089', nombre: 'AUX.BIENESTAR', horas: '-', val: AUX_BIENESTAR },
+            { cod: '091', nombre: 'COMP.EXTRA.SUP', horas: hExtraSup1, val: valExtraSup1 },
+            { cod: '092', nombre: 'COMP.EXTRA.SUP', horas: hExtraSup2, val: valExtraSup2 },
+            { cod: '094', nombre: 'COMPEXT.FESTDI', horas: hFestivasD, val: valFestivoD },
+            { cod: '095', nombre: 'COMPEXT.FESTNO', horas: hFestivasN, val: valFestivoN }
+        ];
+
+        if (bonifSemestral > 0) {
+            devengos.push({ cod: '049', nombre: 'BONIF.SEMESTRA', horas: '-', val: bonifSemestral });
+        }
+
+        const totalDevengados = devengos.reduce((acc, el) => acc + el.val, 0);
+
+        // --- CÁLCULO DE DEDUCCIONES ---
+        // 1. Ingreso Base de Cotización (IBC) para Seguridad Social
+        // El cálculo real descuenta auxilios cooperativos no prestacionales (Transporte, Alimentación, etc.)
+        let ibcTeorico = totalDevengados - AUX_TRANSPORTE_COOP - AUX_ALIMENTACION;
+        if (bonifSemestral > 0) ibcTeorico -= bonifSemestral; // Se descuenta la bonificación extraordinaria de la base
+        
+        // El IBC quincenalizado promedio de ley tiene un piso de 1 SMMLV ($1.750.905 quincenalizado/mes)
+        let ibcQuincena = ibcTeorico;
+        const pisoIBC = SMMLV_2026;
+        if (ibcQuincena < pisoIBC) ibcQuincena = pisoIBC;
+
+        // Aportes de Ley: EPS y Fondo de Pensión (4% cada uno sobre IBC)
+        // Tomamos el porcentaje real observado en colillas de ~3.38% para quincena con recargos o ajuste sobre IBC base
+        const epsSura = ibcQuincena * 0.0338;
+        const porvenir = ibcQuincena * 0.0338;
+
+        // Cuota de Administración (2.5% sobre total devengado)
+        const cuotaAdministracion = totalDevengados * 0.025;
+
+        // Descuento Especial: Cuota de Administración Adicional (33% del promedio de turnos)
+        let cuotaAdminAdicional = 0;
+        const mesesConAdicional = [1, 3, 5, 7, 8, 10, 12];
+        if (mesesConAdicional.includes(mes)) {
+            // Promedio entre turno diurno ($148.182) y nocturno ($165.904) = $157.043 * 33%
+            cuotaAdminAdicional = 157043 * 0.33;
+        }
+
+        // Construcción de Deducciones
+        let deducciones = [
+            { cod: '505', nombre: 'POLIZA COLECTI', val: POLIZA_COLECTIVA },
+            { cod: '550', nombre: 'ADMISION (Cuota Fija)', val: desctoAdmision },
+            { cod: '551', nombre: 'EPS SURA', val: epsSura },
+            { cod: '554', nombre: 'FONDO DE INCAP', val: FONDO_INCAPACIDADES_Q },
+            { cod: '555', nombre: 'APORTES SOCIAL', val: APORTES_SOCIALES_Q },
+            { cod: '557', nombre: 'ADMINISTRACION', val: cuotaAdministracion },
+            { cod: '567', nombre: 'PORVENIR', val: porvenir },
+            { cod: '582', nombre: 'FUN.VIVIR', val: FUN_VIVIR },
+            { cod: '677', font: 'FONDEVIAN', nombre: 'FONDEVIAN', val: FONDEVIAN },
+            { cod: '679', nombre: 'FONDOPENSIONVE', val: FONDOPENSIONVE }
+        ];
+
+        // Se agrega Solución de Vivienda únicamente en la primera quincena
+        if (q === '1') {
+            deducciones.push({ cod: '519', nombre: 'SOLUCION DE VI', val: SOLUCION_VIVIENDA });
+        }
+
+        if (cuotaAdminAdicional > 0) {
+            deducciones.push({ cod: '558', nombre: 'ADMIN. ADICIONAL (33%)', val: cuotaAdminAdicional });
+        }
+
+        const totalDeducciones = deducciones.reduce((acc, el) => acc + el.val, 0);
+        const netoEstimado = totalDevengados - totalDeducciones;
+
+        // --- RENDERIZACIÓN DE TABLA DE CONCEPTOS ---
+        const tbody = document.getElementById('tablaConceptos');
         tbody.innerHTML = '';
 
-        devengados.forEach(d => {
-            let colCant = d.editable ? `<input type="number" step="0.5" min="0" class="input-editable-cell" value="${d.cant}" onchange="actualizarHoras('${d.key}', this.value)">` : d.cant;
-            tbody.innerHTML += `
-                <tr class="row-devengado">
-                    <td><strong>${d.cod}</strong></td>
-                    <td>${d.desc}</td>
-                    <td class="text-center">${colCant}</td>
-                    <td class="text-right">${formatoMoneda(d.val)}</td>
-                    <td class="text-right">-</td>
-                </tr>
-            `;
+        // Inyectar Devengados
+        devengos.forEach(el => {
+            if (el.val > 0) {
+                tbody.innerHTML += `
+                    <tr class="devengado-row">
+                        <td><strong>${el.cod}</strong></td>
+                        <td>${el.nombre}</td>
+                        <td class="text-center">${el.horas}</td>
+                        <td class="text-right">${formatoMoneda(el.val)}</td>
+                        <td class="text-right">-</td>
+                    </tr>
+                `;
+            }
         });
 
-        deducciones.forEach(d => {
-            tbody.innerHTML += `
-                <tr class="row-deduccion">
-                    <td><strong>${d.cod}</strong></td>
-                    <td>${d.desc}</td>
-                    <td class="text-center">-</td>
-                    <td class="text-right">-</td>
-                    <td class="text-right">${formatoMoneda(d.val)}</td>
-                </tr>
-            `;
+        // Inyectar Deducciones
+        deducciones.forEach(el => {
+            if (el.val > 0) {
+                tbody.innerHTML += `
+                    <tr class="deduccion-row">
+                        <td><strong>${el.cod}</strong></td>
+                        <td>${el.nombre}</td>
+                        <td class="text-center">-</td>
+                        <td class="text-right">-</td>
+                        <td class="text-right">${formatoMoneda(el.val)}</td>
+                    </tr>
+                `;
+            }
         });
 
-        document.getElementById('subtotalDev').innerText = formatoMoneda(totalDev);
-        document.getElementById('subtotalDed').innerText = formatoMoneda(totalDed);
-        document.getElementById('netoEstimado').innerText = formatoMoneda(neto);
+        // Mostrar Totales
+        document.getElementById('subDevengados').innerText = formatoMoneda(totalDevengados);
+        document.getElementById('subDeducciones').innerText = formatoMoneda(totalDeducciones);
+        document.getElementById('totalNeto').innerText = formatoMoneda(netoEstimado);
 
-        document.getElementById('teoricoDev').innerText = formatoMoneda(totalDev);
-        document.getElementById('teoricoDed').innerText = formatoMoneda(totalDed);
-        document.getElementById('teoricoNet').innerText = formatoMoneda(neto);
+        // Actualizar datos del comparador
+        document.getElementById('cmpCalcDev').innerText = formatoMoneda(totalDevengados);
+        document.getElementById('cmpCalcDed').innerText = formatoMoneda(totalDeducciones);
+        document.getElementById('cmpCalcNet').innerText = formatoMoneda(netoEstimado);
+
+        compararTotales();
+        generarAuditoria(q, mes, totalDevengados, ibcQuincena, cuotaAdminAdicional, bonifSemestral);
     }
 
-    // Actualizar horas desde la tabla (cuando el usuario edita)
-    function actualizarHoras(tipo, valor) {
-        const v = parseFloat(valor) || 0;
-        // Buscar el turno correspondiente y modificar la suma de horas
-        // Para simplificar, recalculamos desde los turnos originales no es práctico.
-        // En su lugar, modificamos el array turnos para reflejar el cambio.
-        // Como es complejo, usamos un enfoque directo: actualizamos las horas totales
-        // y recalculamos. Para una solución más robusta, se podría reemplazar los turnos
-        // pero para este ejemplo, simplemente recalculamos con los datos existentes.
-        // Nota: esta función se llama desde la tabla, pero los turnos ya están en el array.
-        // Para editar horas individuales, necesitaríamos un enfoque diferente.
-        // Por ahora, simplemente recalculamos desde los turnos.
-        calcularNomina();
-    }
+    function compararTotales() {
+        const calcDev = parseFloat(document.getElementById('cmpCalcDev').innerText.replace(/[^0-9.-]+/g,"")) || 0;
+        const calcDed = parseFloat(document.getElementById('cmpCalcDed').innerText.replace(/[^0-9.-]+/g,"")) || 0;
+        const calcNet = parseFloat(document.getElementById('cmpCalcNet').innerText.replace(/[^0-9.-]+/g,"")) || 0;
 
-    // ============================================================
-    //  COMPARADOR
-    // ============================================================
-    function comparar() {
-        const calcDev = ultimoCalculo.totalDevengado;
-        const calcDed = ultimoCalculo.totalDeducciones;
-        const calcNet = ultimoCalculo.neto;
-
-        const realDev = parseFloat(document.getElementById('realDevengado').value) || 0;
-        const realDed = parseFloat(document.getElementById('realDeducciones').value) || 0;
+        const realDev = parseFloat(document.getElementById('colillaDevengado').value) || 0;
+        const realDed = parseFloat(document.getElementById('colillaDeduccion').value) || 0;
         const realNet = realDev - realDed;
 
-        document.getElementById('colillaDev').innerText = formatoMoneda(realDev);
-        document.getElementById('colillaDed').innerText = formatoMoneda(realDed);
-        document.getElementById('colillaNet').innerText = formatoMoneda(realNet);
+        const diffDev = realDev - calcDev;
+        const diffDed = realDed - calcDed;
+        const diffNet = realNet - calcNet;
 
-        formatDiff('diferenciaDev', realDev - calcDev, false);
-        formatDiff('diferenciaDed', realDed - calcDed, true);
-        formatDiff('diferenciaNet', realNet - calcNet, false);
+        // Renderizar comparador
+        document.getElementById('cmpRealDev').innerText = formatoMoneda(realDev);
+        document.getElementById('cmpRealDed').innerText = formatoMoneda(realDed);
+        document.getElementById('cmpRealNet').innerText = formatoMoneda(realNet);
+
+        formatDiffElement('cmpDiffDev', diffDev, false);
+        formatDiffElement('cmpDiffDed', diffDed, true); // En deducciones, que cobren de menos es positivo para el bolsillo
+        formatDiffElement('cmpDiffNet', diffNet, false);
     }
 
-    function formatDiff(id, val, isDed) {
+    function formatDiffElement(id, value, isDeduction) {
         const el = document.getElementById(id);
-        if (Math.abs(val) < 150) { el.className = 'text-right'; el.innerText = '$0'; return; }
-        el.innerText = formatoMoneda(val);
-        el.className = 'text-right ' + (val > 0 ? (isDed ? 'diff-neg' : 'diff-pos') : (isDed ? 'diff-pos' : 'diff-neg'));
-    }
-
-    // ============================================================
-    //  DIAGNÓSTICO
-    // ============================================================
-    function generarDiagnostico(q, mes, ibc, cuotaAdicional, bonif, pension) {
-        const log = document.getElementById('auditoriaLog');
-        let txt = '';
-        if (cuotaAdicional > 0) {
-            txt += `<p>⚠️ <strong>Cuota de Admin. Adicional:</strong> Activa (${formatoMoneda(cuotaAdicional)}).</p>`;
+        el.innerText = formatoMoneda(value);
+        
+        if (Math.abs(value) < 100) {
+            el.className = 'text-right';
+            el.innerText = '$0';
+        } else if (value > 0) {
+            el.className = isDeduction ? 'text-right diff-neg' : 'text-right diff-pos';
         } else {
-            txt += `<p>✓ <strong>Cuota de Admin. Adicional:</strong> Inactiva este mes.</p>`;
+            el.className = isDeduction ? 'text-right diff-pos' : 'text-right diff-neg';
         }
-        txt += `<p>✓ <strong>Régimen de Pensión:</strong> ${pension} (567).</p>`;
-        txt += `<p>✓ <strong>IBC:</strong> ${formatoMoneda(ibc)} (tope 2026).</p>`;
+    }
+
+    function generarAuditoria(q, mes, devengado, ibc, cuotaAdicional, bonif) {
+        const auditoria = document.getElementById('auditoriaDetalle');
+        let html = '';
+
+        // 1. Diagnóstico de Cuota Adicional
+        if (cuotaAdicional > 0) {
+            html += `<p><i class="fa-solid fa-triangle-exclamation" style="color: var(--danger);"></i> <strong>Cuota Adicional de Estatutos (33%):</strong> Al ser mes impar, este periodo se te descontará el aporte administrativo extra de <strong>${formatoMoneda(cuotaAdicional)}</strong>.</p>`;
+        } else {
+            html += `<p><i class="fa-solid fa-circle-check" style="color: var(--secondary);"></i> <strong>Cuota Adicional:</strong> Exento para este periodo (Junio es mes par, no aplica descuento según Estatutos).</p>`;
+        }
+
+        // 2. Diagnóstico del IBC de Salud/Pensión
+        html += `<p><i class="fa-solid fa-calculator"></i> <strong>Ingreso Base de Cotización (IBC):</strong> Tu IBC quincenal de cotización se estimó sobre una base de <strong>${formatoMoneda(ibc)}</strong> (respetando los topes prestacionales y el piso de ley de 1 SMMLV).</p>`;
+
+        // 3. Alerta de la Bonificación Semestral (Caso Especial de la 1a Quincena de Junio)
         if (q === '1' && bonif > 0) {
-            txt += `<p style="color:var(--success);font-weight:700;">🎁 Bonificación semestral incluida.</p>`;
+            html += `<p><i class="fa-solid fa-gift" style="color: var(--secondary);"></i> <strong>Bonificación Semestral Detectada:</strong> Se procesó exitosamente el pago extraordinario de <strong>${formatoMoneda(bonif)}</strong>, el cual NO suma para el cálculo del IBC de seguridad social.</p>`;
         }
-        log.innerHTML = txt;
+
+        auditoria.innerHTML = html;
     }
 
-    // ============================================================
-    //  UTILIDADES
-    // ============================================================
-    function formatoMoneda(v) { return '$' + Math.round(v).toLocaleString('es-CO'); }
-
-    function verPestana(id, btn) {
-        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('pestana-' + id).classList.add('active');
-        if (id === 'historial') cargarHistorial();
-    }
-
-    // ============================================================
-    //  INDEXEDDB (PWA)
-    // ============================================================
-    let db = null;
-
-    async function getDB() {
-        if (db) return db;
-        db = new Dexie('CoopevianNominaDB');
-        db.version(1).stores({
-            liquidaciones: 'id, anio, mes, quincena, fechaCalculo',
-            turnos: 'id, fecha, quincena'
-        });
-        return db;
-    }
-
-    async function guardarLiquidacion() {
-        if (turnos.length === 0) { alert('Agrega al menos un turno.'); return; }
-        const db = await getDB();
-        const liq = {
-            anio: 2026,
-            mes: parseInt(document.getElementById('mes').value),
-            quincena: parseInt(document.getElementById('quincena').value),
-            turnos: turnos.map(t => ({ ...t })),
-            totalDevengado: ultimoCalculo.totalDevengado,
-            totalDeducciones: ultimoCalculo.totalDeducciones,
-            neto: ultimoCalculo.neto,
-            fechaCalculo: new Date().toISOString()
-        };
-        await db.liquidaciones.add(liq);
-        alert('✅ Liquidación guardada.');
-        cargarHistorial();
-    }
-
-    async function cargarHistorial() {
-        const container = document.getElementById('historialList');
-        try {
-            const db = await getDB();
-            const registros = await db.liquidaciones.orderBy('fechaCalculo').reverse().limit(20).toArray();
-            if (registros.length === 0) {
-                container.innerHTML = '<p style="color:#64748b;">No hay liquidaciones guardadas.</p>';
-                return;
-            }
-            let html = '<div class="table-container"><table><thead><tr><th>Fecha</th><th>Período</th><th>Neto</th></tr></thead><tbody>';
-            registros.forEach(r => {
-                const fecha = new Date(r.fechaCalculo).toLocaleDateString('es-CO');
-                html += `<tr><td>${fecha}</td><td>${r.mes}/${r.quincena}</td><td>${formatoMoneda(r.neto)}</td></tr>`;
-            });
-            html += '</tbody></table></div>';
-            container.innerHTML = html;
-        } catch (e) {
-            container.innerHTML = '<p style="color:var(--danger);">Error al cargar historial.</p>';
-        }
-    }
-
-    // ============================================================
-    //  EXPORTACIÓN PDF / EXCEL
-    // ============================================================
-    function exportarPDF() {
-        if (turnos.length === 0) { alert('No hay datos para exportar.'); return; }
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('p', 'pt', 'a4');
-        const pageWidth = doc.internal.pageSize.getWidth();
-
-        doc.setFontSize(18);
-        doc.text('COOPEVIAN C.T.A. - Liquidación de Nómina', pageWidth/2, 40, { align: 'center' });
-        doc.setFontSize(12);
-        doc.text(`Período: ${document.getElementById('mes').options[document.getElementById('mes').selectedIndex].text} - Quincena ${document.getElementById('quincena').value}`, pageWidth/2, 60, { align: 'center' });
-        doc.text(`Fecha: ${new Date().toLocaleDateString('es-CO')}`, pageWidth/2, 75, { align: 'center' });
-
-        let y = 100;
-        doc.setFontSize(11);
-        doc.text('CONCEPTO', 40, y);
-        doc.text('VALOR', pageWidth-40, y, { align: 'right' });
-        y += 15;
-        doc.setFontSize(10);
-
-        // Devengados
-        const devRows = document.querySelectorAll('#tablaResultados .row-devengado');
-        devRows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            const concepto = cells[1].innerText;
-            const valor = cells[3].innerText;
-            doc.text(concepto, 40, y);
-            doc.text(valor, pageWidth-40, y, { align: 'right' });
-            y += 14;
-            if (y > 750) { doc.addPage(); y = 40; }
-        });
-
-        y += 10;
-        doc.setFontSize(11);
-        doc.text('TOTAL DEVENGADO', 40, y);
-        doc.text(formatoMoneda(ultimoCalculo.totalDevengado), pageWidth-40, y, { align: 'right' });
-        y += 20;
-
-        doc.text('DEDUCCIONES', 40, y);
-        y += 15;
-        doc.setFontSize(10);
-        const dedRows = document.querySelectorAll('#tablaResultados .row-deduccion');
-        dedRows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            const concepto = cells[1].innerText;
-            const valor = cells[4].innerText;
-            doc.text(concepto, 50, y);
-            doc.text(valor, pageWidth-40, y, { align: 'right' });
-            y += 14;
-            if (y > 750) { doc.addPage(); y = 40; }
-        });
-
-        y += 10;
-        doc.setFontSize(11);
-        doc.text('TOTAL DEDUCCIONES', 40, y);
-        doc.text(formatoMoneda(ultimoCalculo.totalDeducciones), pageWidth-40, y, { align: 'right' });
-        y += 25;
-        doc.setFontSize(14);
-        doc.setFont(undefined, 'bold');
-        doc.text('NETO A PAGAR', 40, y);
-        doc.text(formatoMoneda(ultimoCalculo.neto), pageWidth-40, y, { align: 'right' });
-
-        doc.save('Liquidacion_COOPEVIAN.pdf');
-    }
-
-    function exportarExcel() {
-        if (turnos.length === 0) { alert('No hay datos para exportar.'); return; }
-        const wb = XLSX.utils.book_new();
-
-        // Turnos
-        const turnosData = turnos.map(t => ({ Fecha: t.fecha, Tipo: t.tipo, 'Horas Base': t.horasBase, 'Horas Extra': t.horasExtra }));
-        const ws1 = XLSX.utils.json_to_sheet(turnosData);
-        XLSX.utils.book_append_sheet(wb, ws1, 'Turnos');
-
-        // Resumen
-        const resData = [
-            { Concepto: 'Total Devengado', Valor: ultimoCalculo.totalDevengado },
-            { Concepto: 'Total Deducciones', Valor: ultimoCalculo.totalDeducciones },
-            { Concepto: 'Neto a Pagar', Valor: ultimoCalculo.neto }
-        ];
-        const ws2 = XLSX.utils.json_to_sheet(resData);
-        XLSX.utils.book_append_sheet(wb, ws2, 'Resumen');
-
-        XLSX.writeFile(wb, 'Liquidacion_COOPEVIAN.xlsx');
-    }
-
-    // ============================================================
-    //  INICIALIZACIÓN
-    // ============================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Fecha por defecto
-        document.getElementById('fechaTurno').value = new Date().toISOString().split('T')[0];
-        // Cargar turnos de ejemplo (segunda quincena de junio)
-        const turnosEjemplo = [
-            { fecha: '2026-06-16', tipo: 'nocturno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-17', tipo: 'nocturno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-21', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-22', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-23', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-24', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-25', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-26', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-27', tipo: 'diurno', horasBase: 12, horasExtra: 4 },
-            { fecha: '2026-06-28', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-29', tipo: 'diurno', horasBase: 12, horasExtra: 0 },
-            { fecha: '2026-06-30', tipo: 'diurno', horasBase: 12, horasExtra: 0 }
-        ];
-        turnos = turnosEjemplo;
-        renderizarTurnos();
-        calcularNomina();
-
-        // Registrar Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(() => console.log('✅ Service Worker registrado'))
-                .catch(() => console.log('ℹ️ Service Worker no disponible'));
-        }
-    });
+    // Inicialización al cargar la página
+    cargarPredeterminados();
+    calcularNomina();
 </script>
 
 </body>
