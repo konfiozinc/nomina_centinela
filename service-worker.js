@@ -1,4 +1,4 @@
-const CACHE_NAME = 'coopevian-nomina-v1';
+const CACHE_NAME = 'coopevian-simple-v1';
 const ASSETS = ['/index.html', '/manifest.json'];
 
 self.addEventListener('install', e => {

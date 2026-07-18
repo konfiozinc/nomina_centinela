@@ -1,7 +1,7 @@
 {
-  "name": "Nómina Centinela COOPEVIAN",
-  "short_name": "Nómina Centinela",
-  "description": "Liquidación de nómina para asociados COOPEVIAN C.T.A.",
+  "name": "Nómina Simple COOPEVIAN",
+  "short_name": "Nómina Simple",
+  "description": "Liquidación de nómina fácil para asociados COOPEVIAN",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#f4f7f9",
