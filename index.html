@@ -18,7 +18,7 @@
             --card: #ffffff;
             --text: #1a252f;
             --border: #cbd5e1;
-            --input-bg: #f1f5f9;    /* fondo para inputs en modo claro */
+            --input-bg: #f1f5f9;
             --input-border: #94a3b8;
             --danger: #e53e3e;
             --success: #38a169;
@@ -54,7 +54,6 @@
         }
         header p { font-size: 13px; opacity: 0.9; margin-top: 4px; }
 
-        /* CARD */
         .card {
             background: var(--card);
             border-radius: var(--radius);
@@ -75,7 +74,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* FORMULARIO - INPUTS MEJORADOS */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -93,10 +91,10 @@
         }
         .form-group input, .form-group select {
             padding: 10px 12px;
-            border: 2px solid var(--input-border);  /* borde más grueso */
+            border: 2px solid var(--input-border);
             border-radius: 10px;
             font-size: 15px;
-            background: var(--input-bg);             /* fondo diferenciado */
+            background: var(--input-bg);
             color: var(--text);
             transition: 0.2s;
             width: 100%;
@@ -115,7 +113,6 @@
         }
         .full-width { grid-column: span 2; }
 
-        /* BOTONES */
         .btn-group {
             display: flex;
             gap: 10px;
@@ -146,7 +143,6 @@
         .btn-danger { background: var(--danger); color: white; }
         .btn-danger:hover { background: #c53030; }
 
-        /* TABLA */
         .table-container {
             overflow-x: auto;
             border-radius: 12px;
@@ -186,7 +182,6 @@
         }
         .neto-row td { color: white !important; }
 
-        /* ALERTA DIAGNÓSTICO */
         .alert {
             background: #fffaf0;
             border: 1px solid #feebc8;
@@ -208,7 +203,6 @@
         .diff-pos { color: var(--success); font-weight: 700; }
         .diff-neg { color: var(--danger); font-weight: 700; }
 
-        /* RESPONSIVE */
         @media (max-width: 480px) {
             .form-grid { grid-template-columns: 1fr; }
             .full-width { grid-column: span 1; }
@@ -220,14 +214,13 @@
             .form-group input, .form-group select { font-size: 14px; padding: 12px; }
         }
 
-        /* DARK MODE (automático) */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg: #1a1a2e;
                 --card: #16213e;
                 --text: #e9ecef;
                 --border: #2d3a5e;
-                --input-bg: #1e293b;      /* fondo oscuro para inputs */
+                --input-bg: #1e293b;
                 --input-border: #475569;
             }
             .form-group input, .form-group select {
@@ -250,7 +243,6 @@
             .alert p { color: #fbd38d; }
         }
 
-        /* PRINT */
         @media print {
             body { background: white; padding: 0; }
             .btn-group, .no-print { display: none !important; }
@@ -275,17 +267,18 @@
                 <select id="mes">
                     <option value="1">Enero</option><option value="2">Febrero</option>
                     <option value="3">Marzo</option><option value="4">Abril</option>
-                    <option value="5">Mayo</option><option value="6" selected>Junio</option>
-                    <option value="7">Julio</option><option value="8">Agosto</option>
-                    <option value="9">Septiembre</option><option value="10">Octubre</option>
-                    <option value="11">Noviembre</option><option value="12">Diciembre</option>
+                    <option value="5">Mayo</option><option value="6">Junio</option>
+                    <option value="7" selected>Julio</option>
+                    <option value="8">Agosto</option><option value="9">Septiembre</option>
+                    <option value="10">Octubre</option><option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="quincena">Quincena</label>
                 <select id="quincena">
                     <option value="1">1ª (01-15)</option>
-                    <option value="2" selected>2ª (16-30/31)</option>
+                    <option value="2">2ª (16-30/31)</option>
                 </select>
             </div>
         </div>
@@ -297,23 +290,23 @@
         <div class="form-grid">
             <div class="form-group">
                 <label for="diurnos">Diurnos (12h)</label>
-                <input type="number" id="diurnos" value="10" min="0" step="1">
+                <input type="number" id="diurnos" value="8" min="0" step="1">
             </div>
             <div class="form-group">
                 <label for="nocturnos">Nocturnos (12h)</label>
-                <input type="number" id="nocturnos" value="2" min="0" step="1">
+                <input type="number" id="nocturnos" value="0" min="0" step="1">
             </div>
             <div class="form-group">
                 <label for="festivosD">Festivos Diurnos</label>
-                <input type="number" id="festivosD" value="3" min="0" step="1">
+                <input type="number" id="festivosD" value="4" min="0" step="1">
             </div>
             <div class="form-group">
                 <label for="festivosN">Festivos Nocturnos</label>
-                <input type="number" id="festivosN" value="0" min="0" step="1">
+                <input type="number" id="festivosN" value="2" min="0" step="1">
             </div>
             <div class="form-group full-width">
                 <label for="extras">Horas Extras (totales)</label>
-                <input type="number" id="extras" value="4" min="0" step="0.5">
+                <input type="number" id="extras" value="48" min="0" step="0.5">
                 <span style="font-size:11px;color:#64748b;margin-top:3px;">Ej: si hiciste 4 horas extra en total</span>
             </div>
         </div>
@@ -375,7 +368,7 @@
 
 <script>
     // ============================================================
-    //  CONFIGURACIÓN (valores COOPEVIAN 2026)
+    //  CONFIGURACIÓN MAESTRA (COOPEVIAN 2026)
     // ============================================================
     const SMMLV = 1750905;
     const VALOR_HORA_BASE = 7958.6591;
@@ -387,25 +380,26 @@
     const FACTOR_FESTIVO_D = 12;
     const FACTOR_FESTIVO_N = 12;
 
-    // Auxilios fijos
-    let auxilios = {
-        comunicacion: 76356,
-        alimentacionN: 157731,
-        alimentacionE: 36804,
-        movilizacion: 90515,
-        bienestar: 48458,
-        transporte: 118160
-    };
+    // Auxilios fijos quincenales (valores 2026)
+    const AUX_COMUNICACION = 76356;
+    const AUX_ALIMENTACION_N = 157731;
+    const AUX_ALIMENTACION_E = 36804;
+    const AUX_MOVILIZACION = 90515;
+    const AUX_BIENESTAR = 48458;
+    const AUX_TRANSPORTE = 118160;
 
-    // Deducciones fijas
+    // Deducciones fijas (quincenales)
     const APORTES_SOCIALES = 126940;
     const FONDO_INCAP = 35018;
     const POLIZA = 5750;
     const FUN_VIVIR = 12450;
     const FONDEVIAN = 30952;
     const FONDOPENSIONVE = 3609;
+    const ADMISION = 29656;
+    const SOLUCION_VIVIENDA = 29697;  // solo 1ª quincena
+    const CUOTA_ADICIONAL_BASE = 157043; // base para el 33%
 
-    let ultimoCalculo = { totalDev: 0, totalDed: 0, neto: 0 };
+    let ultimoCalculo = { totalDev: 0, totalDed: 0, neto: 0, ibc: 0 };
 
     // ============================================================
     //  CÁLCULO PRINCIPAL
@@ -428,10 +422,10 @@
         const hFestN = festN * FACTOR_FESTIVO_N;
 
         const vHora = VALOR_HORA_BASE;
-        const vNocturna = vHora * 1.35;
-        const vFestD = vHora * 1.75;
-        const vFestN = vHora * 2.10;
-        const vExtra = vHora * 1.55;
+        const vNocturna = vHora * 1.35;   // recargo 35%
+        const vFestD = vHora * 1.75;      // dominical/festivo diurno
+        const vFestN = vHora * 2.10;      // dominical/festivo nocturno
+        const vExtra = vHora * 1.55;      // extra diurna (asumimos todas como diurnas)
 
         const valDiurno = hDiurnas * vHora;
         const valNocturno = hNocturnas * vNocturna;
@@ -440,34 +434,39 @@
         const valFestN = hFestN * vFestN;
         const valExtra = extras * vExtra;
 
-        const totalAux = Object.values(auxilios).reduce((a,b) => a+b, 0);
+        // Auxilios
+        const totalAux = AUX_COMUNICACION + AUX_ALIMENTACION_N + AUX_ALIMENTACION_E +
+                         AUX_MOVILIZACION + AUX_BIENESTAR + AUX_TRANSPORTE;
 
+        // Bonificación semestral (solo en junio y diciembre, primera quincena)
         let bonif = 0;
         if (quincena === '1' && (mes === 6 || mes === 12)) {
-            bonif = diurnos * 74091;
+            bonif = diurnos * 74091; // 50% del turno diurno ($148.182 / 2 = $74.091)
         }
 
-        const totalDev = valDiurno + valNocturno + valDescanso + valFestD + valFestN + valExtra + totalAux + bonif;
+        const totalDev = valDiurno + valNocturno + valDescanso + valFestD + valFestN +
+                         valExtra + totalAux + bonif;
 
-        let ibc = totalDev - auxilios.transporte - bonif;
+        // IBC (excluye auxilio de transporte y bonificación)
+        let ibc = totalDev - AUX_TRANSPORTE - bonif;
         if (ibc < SMMLV) ibc = SMMLV;
+        const TOPE_IBC = 2826775;
+        if (ibc > TOPE_IBC) ibc = TOPE_IBC;
 
+        // Deducciones
         const eps = ibc * 0.0338;
         const pension = ibc * 0.0338;
         const cuotaAdmin = totalDev * 0.025;
 
         let cuotaAdicional = 0;
-        const mesesAdicional = [1,3,5,7,8,10,12];
+        const mesesAdicional = [1, 3, 5, 7, 8, 10, 12];
         if (mesesAdicional.includes(mes)) {
-            cuotaAdicional = 157043 * 0.33;
+            cuotaAdicional = CUOTA_ADICIONAL_BASE * 0.33;
         }
-
-        const descAdmision = 29656;
-        const descCoopantex = 0;
 
         const deducciones = [
             { cod: '505', desc: 'POLIZA COLECTI', val: POLIZA },
-            { cod: '550', desc: 'ADMISION', val: descAdmision },
+            { cod: '550', desc: 'ADMISION', val: ADMISION },
             { cod: '551', desc: 'EPS SURA', val: eps },
             { cod: '554', desc: 'FONDO DE INCAP', val: FONDO_INCAP },
             { cod: '555', desc: 'APORTES SOCIAL', val: APORTES_SOCIALES },
@@ -477,15 +476,22 @@
             { cod: '679', desc: 'FONDOPENSIONVE', val: FONDOPENSIONVE },
             { cod: '567', desc: 'PORVENIR', val: pension }
         ];
-        if (descCoopantex > 0) deducciones.push({ cod: '661', desc: 'COOPANTEX', val: descCoopantex });
-        if (quincena === '1') deducciones.push({ cod: '519', desc: 'SOLUCION DE VI', val: 29697 });
-        if (cuotaAdicional > 0) deducciones.push({ cod: '558', desc: 'ADMIN. ADICIONAL (33%)', val: cuotaAdicional });
 
-        const totalDed = deducciones.reduce((a,d) => a + d.val, 0);
+        // Descuentos adicionales según quincena
+        if (quincena === '1') {
+            deducciones.push({ cod: '519', desc: 'SOLUCION DE VI', val: SOLUCION_VIVIENDA });
+        }
+        if (cuotaAdicional > 0) {
+            deducciones.push({ cod: '558', desc: 'ADMIN. ADICIONAL (33%)', val: cuotaAdicional });
+        }
+
+        const totalDed = deducciones.reduce((a, d) => a + d.val, 0);
         const neto = totalDev - totalDed;
 
+        // Guardar para el comparador
         ultimoCalculo = { totalDev, totalDed, neto, ibc, bonif };
 
+        // Construir tabla de devengados
         const devengados = [
             { cod: '001', desc: 'COMP.ORD.BAS D', cant: hDiurnas.toFixed(2), val: valDiurno },
             { cod: '003', desc: 'COMP.ORD.BAS N', cant: hNocturnas.toFixed(2), val: valNocturno },
@@ -493,14 +499,16 @@
             { cod: '094', desc: 'COMPEXT.FESTDI', cant: hFestD.toFixed(2), val: valFestD },
             { cod: '095', desc: 'COMPEXT.FESTNO', cant: hFestN.toFixed(2), val: valFestN },
             { cod: '091', desc: 'COMP.EXTRA.SUP', cant: extras.toFixed(1), val: valExtra },
-            { cod: '040', desc: 'AUX.COMUNICACI', cant: '—', val: auxilios.comunicacion },
-            { cod: '045', desc: 'AUX.ALIMENTACI (N)', cant: '—', val: auxilios.alimentacionN },
-            { cod: '047', desc: 'AUX.ALIMENTACI (E)', cant: '—', val: auxilios.alimentacionE },
-            { cod: '048', desc: 'AUX.MOVILIZACI', cant: '—', val: auxilios.movilizacion },
-            { cod: '082', desc: 'AUXILIO DE TRA', cant: '—', val: auxilios.transporte },
-            { cod: '089', desc: 'AUX.BIENESTAR', cant: '—', val: auxilios.bienestar }
+            { cod: '040', desc: 'AUX.COMUNICACI', cant: '—', val: AUX_COMUNICACION },
+            { cod: '045', desc: 'AUX.ALIMENTACI (N)', cant: '—', val: AUX_ALIMENTACION_N },
+            { cod: '047', desc: 'AUX.ALIMENTACI (E)', cant: '—', val: AUX_ALIMENTACION_E },
+            { cod: '048', desc: 'AUX.MOVILIZACI', cant: '—', val: AUX_MOVILIZACION },
+            { cod: '082', desc: 'AUXILIO DE TRA', cant: '—', val: AUX_TRANSPORTE },
+            { cod: '089', desc: 'AUX.BIENESTAR', cant: '—', val: AUX_BIENESTAR }
         ];
-        if (bonif > 0) devengados.push({ cod: '049', desc: 'BONIF.SEMESTRA', cant: '—', val: bonif });
+        if (bonif > 0) {
+            devengados.push({ cod: '049', desc: 'BONIF.SEMESTRA', cant: '—', val: bonif });
+        }
 
         renderizarTabla(devengados, deducciones, totalDev, totalDed, neto);
         mostrarDiagnostico(quincena, mes, ibc, cuotaAdicional, bonif);
@@ -541,7 +549,7 @@
         } else {
             txt += `<p>✓ <strong>Cuota adicional</strong> inactiva este mes</p>`;
         }
-        txt += `<p>✓ <strong>IBC</strong> calculado: ${formatoMoneda(ibc)} (tope 2026)</p>`;
+        txt += `<p>✓ <strong>IBC</strong> calculado: ${formatoMoneda(ibc)} (tope 2026: $2.826.775)</p>`;
         if (bonif > 0) {
             txt += `<p style="color:var(--success);font-weight:700;">🎁 Bonificación semestral incluida: ${formatoMoneda(bonif)}</p>`;
         }
@@ -576,12 +584,15 @@
         `;
     }
 
+    // ============================================================
+    //  UTILIDADES
+    // ============================================================
     function formatoMoneda(v) {
         return '$' + Math.round(v).toLocaleString('es-CO');
     }
 
     // ============================================================
-    //  EXPORTACIÓN
+    //  EXPORTACIÓN (PDF y Excel)
     // ============================================================
     function exportarPDF() {
         if (!ultimoCalculo.totalDev) { alert('Primero calcula la liquidación.'); return; }
