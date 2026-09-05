@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#004d40">
+    <title>Nómina Simple · COOPEVIAN</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+<link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1><i class="fa-solid fa-calculator"></i> Nómina Simple</h1>
+        <p>Ingresa tus turnos y obtén tu liquidación al instante</p>
+    </header>
+
+    <!-- ===== PERÍODO ===== -->
+    <div class="card">
+        <h2><i class="fa-regular fa-calendar"></i> Período</h2>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="mes">Mes</label>
+                <select id="mes">
+                    <option value="1">Enero</option><option value="2">Febrero</option>
+                    <option value="3">Marzo</option><option value="4">Abril</option>
+                    <option value="5">Mayo</option><option value="6">Junio</option>
+                    <option value="7" selected>Julio</option>
+                    <option value="8">Agosto</option><option value="9">Septiembre</option>
+                    <option value="10">Octubre</option><option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quincena">Quincena</label>
+                <select id="quincena">
+                    <option value="1">1ª (01-15)</option>
+                    <option value="2">2ª (16-30/31)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TURNOS ===== -->
+    <div class="card">
+        <h2><i class="fa-regular fa-clock"></i> Turnos trabajados</h2>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="diurnos">Diurnos (12h)</label>
+                <input type="number" id="diurnos" value="8" min="0" step="1">
+            </div>
+            <div class="form-group">
+                <label for="nocturnos">Nocturnos (12h)</label>
+                <input type="number" id="nocturnos" value="0" min="0" step="1">
+            </div>
+            <div class="form-group">
+                <label for="festivosD">Festivos Diurnos</label>
+                <input type="number" id="festivosD" value="4" min="0" step="1">
+            </div>
+            <div class="form-group">
+                <label for="festivosN">Festivos Nocturnos</label>
+                <input type="number" id="festivosN" value="2" min="0" step="1">
+            </div>
+            <div class="form-group full-width">
+                <label for="extras">Horas Extras (totales)</label>
+                <input type="number" id="extras" value="48" min="0" step="0.5">
+                <span style="font-size:11px;color:#64748b;margin-top:3px;">Ej: si hiciste 4 horas extra en total</span>
+            </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="calcular()">
+            <i class="fa-solid fa-arrow-right"></i> Calcular liquidación
+        </button>
+    </div>
+
+    <!-- ===== RESULTADOS ===== -->
+    <div class="card" id="resultados">
+        <h2><i class="fa-regular fa-receipt"></i> Liquidación</h2>
+        <div class="table-container">
+            <table>
+                <thead><tr><th>Cpto</th><th>Concepto</th><th class="text-center">Cant</th><th class="text-right">Valor</th></tr></thead>
+                <tbody id="tablaBody">
+                    <tr><td colspan="4" class="text-center" style="color:#94a3b8;">Aún no has calculado</td></tr>
+                </tbody>
+                <tfoot>
+                    <tr class="total-row"><td colspan="3">TOTAL DEVENGADO</td><td class="text-right" id="totalDev">$0</td></tr>
+                    <tr class="total-row"><td colspan="3">TOTAL DEDUCCIONES</td><td class="text-right" id="totalDed">$0</td></tr>
+                    <tr class="neto-row"><td colspan="3">NETO A PAGAR</td><td class="text-right" id="neto">$0</td></tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="btn-group no-print">
+            <button class="btn btn-success" onclick="exportarPDF()"><i class="fa-regular fa-file-pdf"></i> PDF</button>
+            <button class="btn btn-outline" onclick="exportarExcel()"><i class="fa-regular fa-file-excel"></i> Excel</button>
+            <button class="btn btn-outline" onclick="window.print()"><i class="fa-regular fa-print"></i> Imprimir</button>
+        </div>
+    </div>
+
+    <!-- ===== DIAGNÓSTICO ===== -->
+    <div class="alert" id="diagnostico">
+        <h3><i class="fa-regular fa-circle-exclamation"></i> Diagnóstico</h3>
+        <div id="diagnosticoContenido">Presiona "Calcular" para ver el análisis.</div>
+    </div>
+
+    <!-- ===== COMPARADOR ===== -->
+    <div class="card no-print">
+        <h2><i class="fa-regular fa-scale-balanced"></i> Comparar con colilla</h2>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="realDev">Devengado real</label>
+                <input type="number" id="realDev" value="2006431" step="1">
+            </div>
+            <div class="form-group">
+                <label for="realDed">Deducciones reales</label>
+                <input type="number" id="realDed" value="412808" step="1">
+            </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;" onclick="comparar()"><i class="fa-regular fa-arrows-left-right"></i> Comparar</button>
+        <div id="comparacionResultados" style="margin-top:12px;"></div>
+    </div>
+
+    <p style="text-align:center;font-size:11px;color:#94a3b8;margin-top:20px;">
+        Herramienta de apoyo · No reemplaza la colilla oficial
+    </p>
+</div>
+
+
+<script src="scripts.js"></script>
+
+</body>
+</html>s

@@ -1,0 +1,241 @@
+/* ===== RESET Y VARIABLES ===== */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+        :root {
+            --primary: #004d40;
+            --primary-light: #e0f2f1;
+            --primary-accent: #00bfa5;
+            --bg: #f4f7f9;
+            --card: #ffffff;
+            --text: #1a252f;
+            --border: #cbd5e1;
+            --input-bg: #f1f5f9;
+            --input-border: #94a3b8;
+            --danger: #e53e3e;
+            --success: #38a169;
+            --shadow: 0 4px 20px rgba(0,0,0,0.06);
+            --radius: 16px;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            padding: 16px;
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary), #00796b);
+            color: white;
+            padding: 20px 24px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,77,64,0.2);
+        }
+        header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        header p { font-size: 13px; opacity: 0.9; margin-top: 4px; }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+        }
+        .card h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px 12px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: 700;
+            font-size: 12px;
+            color: #4a5568;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group select {
+            padding: 10px 12px;
+            border: 2px solid var(--input-border);
+            border-radius: 10px;
+            font-size: 15px;
+            background: var(--input-bg);
+            color: var(--text);
+            transition: 0.2s;
+            width: 100%;
+            -moz-appearance: textfield;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0,191,165,0.15);
+        }
+        .form-group input[type="number"]::-webkit-outer-spin-button,
+        .form-group input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .full-width { grid-column: span 2; }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 100px;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #003d33; transform: translateY(-1px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #2f855a; }
+        .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-outline:hover { background: var(--primary-light); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #c53030; }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-top: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 700;
+            color: #4a5568;
+            text-transform: uppercase;
+            font-size: 11px;
+            padding: 10px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        td {
+            padding: 10px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #2d3748;
+        }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        .row-dev { background: #f6fcf9; }
+        .row-ded { background: #fffafb; }
+        .total-row { background: var(--primary-light) !important; font-weight: 700; color: var(--primary); }
+        .neto-row {
+            background: linear-gradient(135deg, var(--primary), #00796b) !important;
+            color: white !important;
+            font-weight: 800;
+        }
+        .neto-row td { color: white !important; }
+
+        .alert {
+            background: #fffaf0;
+            border: 1px solid #feebc8;
+            padding: 16px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+        }
+        .alert h3 {
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #7b341e;
+            margin-bottom: 6px;
+        }
+        .alert p { margin-bottom: 4px; font-size: 13px; }
+
+        .diff-pos { color: var(--success); font-weight: 700; }
+        .diff-neg { color: var(--danger); font-weight: 700; }
+
+        @media (max-width: 480px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .btn-group { flex-direction: column; }
+            .btn { flex: none; width: 100%; }
+            header h1 { font-size: 18px; }
+            .card { padding: 16px; }
+            th, td { padding: 8px 6px; font-size: 12px; }
+            .form-group input, .form-group select { font-size: 14px; padding: 12px; }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1a1a2e;
+                --card: #16213e;
+                --text: #e9ecef;
+                --border: #2d3a5e;
+                --input-bg: #1e293b;
+                --input-border: #475569;
+            }
+            .form-group input, .form-group select {
+                background: var(--input-bg);
+                color: #e9ecef;
+                border-color: var(--input-border);
+            }
+            .form-group input:focus, .form-group select:focus {
+                background: #0f0f1f;
+                border-color: var(--primary-accent);
+            }
+            .form-group label { color: #a0aec0; }
+            th { background: #0f1a2e; color: #a0aec0; }
+            td { border-color: #2d3a5e; color: #e2e8f0; }
+            .row-dev { background: #1a2e2a; }
+            .row-ded { background: #2e1a1a; }
+            .total-row { background: #1a3a3a !important; }
+            .alert { background: #2d1f0a; border-color: #744210; }
+            .alert h3 { color: #fbd38d; }
+            .alert p { color: #fbd38d; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .btn-group, .no-print { display: none !important; }
+            .card { box-shadow: none; border: 1px solid #ccc; }
+            .form-group input, .form-group select { border: 1px solid #999; background: white; }
+        }
