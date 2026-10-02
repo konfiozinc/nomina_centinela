@@ -1,8 +1,9 @@
 {
-  "name": "Nómina Simple COOPEVIAN",
-  "short_name": "Nómina Simple",
-  "description": "Liquidación de nómina fácil para asociados COOPEVIAN",
-  "start_url": "/index.html",
+  "name": "Centinela — Nómina Simple COOPEVIAN",
+  "short_name": "Centinela",
+  "description": "Calculadora de liquidación de nómina y turnos. Herramienta interna para verificar colillas.",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f4f7f9",
   "theme_color": "#004d40",
@@ -10,12 +11,15 @@
     {
       "src": "assets/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "assets/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "lang": "es"
 }

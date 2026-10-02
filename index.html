@@ -2,14 +2,46 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#004d40">
-    <title>Nómina Simple · COOPEVIAN</title>
+    <title>Centinela · Nómina Simple COOPEVIAN</title>
+    <meta name="description" content="Centinela — Calculadora de liquidación de nómina y turnos. Herramienta interna para verificar colillas.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://konfiozinc.github.io/nomina_centinela/">
     <link rel="manifest" href="manifest.json">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    
-<link rel="stylesheet" href="styles.css">
 
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Centinela">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:url" content="https://konfiozinc.github.io/nomina_centinela/">
+    <meta property="og:title" content="Centinela · Nómina Simple COOPEVIAN">
+    <meta property="og:description" content="Calculadora de liquidación de nómina y turnos. Herramienta interna para verificar colillas.">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Centinela · Nómina Simple COOPEVIAN">
+    <meta name="twitter:description" content="Calculadora de liquidación de nómina y turnos. Herramienta interna para verificar colillas.">
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Centinela — Nómina Simple COOPEVIAN",
+      "description": "Calculadora de liquidación de nómina y turnos. Herramienta interna para verificar colillas.",
+      "url": "https://konfiozinc.github.io/nomina_centinela/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "COP" }
+    }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="container">
@@ -47,32 +79,82 @@
     <!-- ===== TURNOS ===== -->
     <div class="card">
         <h2><i class="fa-regular fa-clock"></i> Turnos trabajados</h2>
+
+        <div class="nota-turnos">
+            ℹ️ Ingresa el <strong>NÚMERO DE TURNOS</strong>, no las horas. Cada turno dura <strong>12 horas</strong>.<br>
+            Ejemplo: si trabajaste 48 horas diurnas, ingresa <strong>4</strong> (48 ÷ 12).<br>
+            <em>¿Tienes las horas de tu colilla? Usa el botón "Cargar desde colilla" y se convierten solas.</em>
+        </div>
+
         <div class="form-grid">
             <div class="form-group">
                 <label for="diurnos">Diurnos (12h)</label>
-                <input type="number" id="diurnos" value="8" min="0" step="1">
+                <input type="number" id="diurnos" value="4" min="0" max="15" step="1" placeholder="Ej: 4" aria-label="Turnos diurnos">
+                <span class="equiv-horas" id="eqDiurnos"></span>
             </div>
             <div class="form-group">
                 <label for="nocturnos">Nocturnos (12h)</label>
-                <input type="number" id="nocturnos" value="0" min="0" step="1">
+                <input type="number" id="nocturnos" value="4" min="0" max="15" step="1" placeholder="Ej: 4" aria-label="Turnos nocturnos">
+                <span class="equiv-horas" id="eqNocturnos"></span>
             </div>
             <div class="form-group">
                 <label for="festivosD">Festivos Diurnos</label>
-                <input type="number" id="festivosD" value="4" min="0" step="1">
+                <input type="number" id="festivosD" value="2" min="0" max="15" step="1" placeholder="Ej: 2" aria-label="Turnos festivos diurnos">
+                <span class="equiv-horas" id="eqFestivosD"></span>
             </div>
             <div class="form-group">
                 <label for="festivosN">Festivos Nocturnos</label>
-                <input type="number" id="festivosN" value="2" min="0" step="1">
+                <input type="number" id="festivosN" value="1" min="0" max="15" step="1" placeholder="Ej: 1" aria-label="Turnos festivos nocturnos">
+                <span class="equiv-horas" id="eqFestivosN"></span>
             </div>
             <div class="form-group full-width">
-                <label for="extras">Horas Extras (totales)</label>
-                <input type="number" id="extras" value="48" min="0" step="0.5">
-                <span style="font-size:11px;color:#64748b;margin-top:3px;">Ej: si hiciste 4 horas extra en total</span>
+                <label for="extras">Horas Extras (en horas)</label>
+                <input type="number" id="extras" value="8" min="0" step="0.5" placeholder="Ej: 8" aria-label="Horas extras totales">
+                <span style="font-size:11px;color:#64748b;margin-top:3px;">Ojo: este campo SÍ va en horas (no en turnos).</span>
             </div>
         </div>
-        <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="calcular()">
+
+        <div class="resumen-horas" id="resumenHoras"></div>
+
+        <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="calcular()" aria-label="Calcular liquidación">
             <i class="fa-solid fa-arrow-right"></i> Calcular liquidación
         </button>
+        <div id="errorMsg" style="display:none;color:var(--danger);font-weight:700;margin-top:10px;font-size:13px;" role="alert"></div>
+        <button class="btn btn-outline" style="width:100%;margin-top:8px;" onclick="abrirColilla()" aria-label="Cargar horas desde la colilla">
+            <i class="fa-regular fa-file-lines"></i> Cargar desde colilla (horas)
+        </button>
+        <button class="btn btn-outline" style="width:100%;margin-top:8px;" onclick="limpiarTodo()" aria-label="Limpiar todos los turnos">
+            <i class="fa-regular fa-trash-can"></i> Limpiar todo
+        </button>
+    </div>
+
+    <!-- ===== PARÁMETROS AJUSTABLES ===== -->
+    <div class="card no-print">
+        <h2><i class="fa-solid fa-sliders"></i> Parámetros del período</h2>
+        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Ajusta estos valores si tu colilla varía entre quincenas. Los valores por defecto son los de la convención actual.</p>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="paramHorasNominales">Horas nominales</label>
+                <input type="number" id="paramHorasNominales" value="220" min="1" step="1" aria-label="Horas nominales del período">
+            </div>
+            <div class="form-group">
+                <label for="paramHoraBase">Valor hora base</label>
+                <input type="number" id="paramHoraBase" value="7958.6591" min="0" step="0.0001" aria-label="Valor hora base">
+            </div>
+            <div class="form-group">
+                <label for="paramAuxTransporte">Auxilio transporte (quincenal)</label>
+                <input type="number" id="paramAuxTransporte" value="118160" min="0" step="1" aria-label="Auxilio de transporte quincenal">
+            </div>
+            <div class="form-group">
+                <label for="paramTopeIbc">Tope IBC</label>
+                <input type="number" id="paramTopeIbc" value="2826775" min="0" step="1" aria-label="Tope de IBC">
+            </div>
+            <div class="form-group full-width">
+                <label for="paramIbcManual">IBC manual (opcional)</label>
+                <input type="number" id="paramIbcManual" placeholder="Vacío = cálculo automático" min="0" step="1" aria-label="IBC manual">
+                <span style="font-size:11px;color:#64748b;margin-top:3px;">Si tu colilla trae otro IBC, escríbelo aquí y se usará ese.</span>
+            </div>
+        </div>
     </div>
 
     <!-- ===== RESULTADOS ===== -->
@@ -92,9 +174,9 @@
             </table>
         </div>
         <div class="btn-group no-print">
-            <button class="btn btn-success" onclick="exportarPDF()"><i class="fa-regular fa-file-pdf"></i> PDF</button>
-            <button class="btn btn-outline" onclick="exportarExcel()"><i class="fa-regular fa-file-excel"></i> Excel</button>
-            <button class="btn btn-outline" onclick="window.print()"><i class="fa-regular fa-print"></i> Imprimir</button>
+            <button class="btn btn-success" onclick="exportarPDF()" aria-label="Exportar a PDF"><i class="fa-regular fa-file-pdf"></i> PDF</button>
+            <button class="btn btn-outline" onclick="exportarExcel()" aria-label="Exportar a Excel"><i class="fa-regular fa-file-excel"></i> Excel</button>
+            <button class="btn btn-outline" onclick="window.print()" aria-label="Imprimir liquidación"><i class="fa-regular fa-print"></i> Imprimir</button>
         </div>
     </div>
 
@@ -116,18 +198,57 @@
                 <label for="realDed">Deducciones reales</label>
                 <input type="number" id="realDed" value="412808" step="1">
             </div>
+            <div class="form-group full-width">
+                <label for="realNeto">Neto real (opcional)</label>
+                <input type="number" id="realNeto" step="1" placeholder="Ej: 1617896">
+                <span style="font-size:11px;color:#64748b;margin-top:3px;">Si lo escribes, se compara directo contra el neto calculado.</span>
+            </div>
         </div>
-        <button class="btn btn-primary" style="width:100%;" onclick="comparar()"><i class="fa-regular fa-arrows-left-right"></i> Comparar</button>
+        <button class="btn btn-primary" style="width:100%;" onclick="comparar()" aria-label="Comparar con colilla real"><i class="fa-regular fa-arrows-left-right"></i> Comparar</button>
         <div id="comparacionResultados" style="margin-top:12px;"></div>
     </div>
 
-    <p style="text-align:center;font-size:11px;color:#94a3b8;margin-top:20px;">
+    <p style="text-align:center;font-size:14px;color:#94a3b8;margin-top:20px;">
         Herramienta de apoyo · No reemplaza la colilla oficial
     </p>
 </div>
 
+<!-- ===== MODAL: CARGAR DESDE COLILLA ===== -->
+<div class="modal-overlay" id="modalColilla" role="dialog" aria-modal="true" aria-label="Cargar horas desde la colilla">
+    <div class="modal-box">
+        <h3><i class="fa-regular fa-file-lines"></i> Cargar desde colilla</h3>
+        <p class="modal-sub">Ingresa las <strong>HORAS</strong> que aparecen en tu colilla. Se convertirán a turnos de 12 h (redondeando).</p>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="colDiurnas">Horas diurnas</label>
+                <input type="number" id="colDiurnas" min="0" step="0.01" placeholder="Ej: 44.04" aria-label="Horas diurnas de la colilla">
+            </div>
+            <div class="form-group">
+                <label for="colNocturnas">Horas nocturnas</label>
+                <input type="number" id="colNocturnas" min="0" step="0.01" placeholder="Ej: 44.04" aria-label="Horas nocturnas de la colilla">
+            </div>
+            <div class="form-group">
+                <label for="colFestD">Horas festivas diurnas</label>
+                <input type="number" id="colFestD" min="0" step="0.01" placeholder="Ej: 24" aria-label="Horas festivas diurnas">
+            </div>
+            <div class="form-group">
+                <label for="colFestN">Horas festivas nocturnas</label>
+                <input type="number" id="colFestN" min="0" step="0.01" placeholder="Ej: 12" aria-label="Horas festivas nocturnas">
+            </div>
+            <div class="form-group full-width">
+                <label for="colExtras">Horas extras</label>
+                <input type="number" id="colExtras" min="0" step="0.5" placeholder="Ej: 8" aria-label="Horas extras de la colilla">
+            </div>
+        </div>
+        <div id="convResultado"></div>
+        <div class="modal-acciones">
+            <button class="btn btn-primary" onclick="convertirColilla()" aria-label="Convertir horas a turnos"><i class="fa-solid fa-arrow-right"></i> Convertir a turnos</button>
+            <button class="btn btn-outline" onclick="cerrarColilla()" aria-label="Cerrar ventana"><i class="fa-solid fa-xmark"></i> Cerrar</button>
+        </div>
+    </div>
+</div>
 
 <script src="scripts.js"></script>
 
 </body>
-</html>s
+</html>

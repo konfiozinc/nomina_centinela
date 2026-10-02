@@ -23,14 +23,185 @@
     const APORTES_SOCIALES = 126940;
     const FONDO_INCAP = 35018;
     const POLIZA = 5750;
-    const FUN_VIVIR = 12450;
+    const FUN_VIVIR = 12275;
     const FONDEVIAN = 30952;
     const FONDOPENSIONVE = 3609;
     const ADMISION = 29656;
     const SOLUCION_VIVIENDA = 29697;  // solo 1ª quincena
     const CUOTA_ADICIONAL_BASE = 157043; // base para el 33%
 
+    // Parámetros ajustables por período (defaults = convención actual)
+    const TOPE_IBC = 2826775;
+    const HORAS_NOMINALES = 220;
+
     let ultimoCalculo = { totalDev: 0, totalDed: 0, neto: 0, ibc: 0 };
+
+    const STORAGE_KEY = 'centinela_datos_v1';
+
+    function validarInputs(diurnos, nocturnos, festD, festN, extras) {
+        if ([diurnos, nocturnos, festD, festN, extras].some(v => v < 0)) {
+            return 'Los valores no pueden ser negativos.';
+        }
+        const campos = [['Diurnos', diurnos], ['Nocturnos', nocturnos], ['Festivos diurnos', festD], ['Festivos nocturnos', festN]];
+        for (const [nombre, v] of campos) {
+            if (v > 15) return nombre + ': máximo 15 turnos en una quincena de 15 días.';
+        }
+        if (extras > 200) {
+            return 'Las horas extras superan el máximo razonable (200 h).';
+        }
+        return null;
+    }
+
+    function mostrarError(msg) {
+        const el = document.getElementById('errorMsg');
+        if (el) {
+            el.textContent = msg;
+            el.style.display = msg ? 'block' : 'none';
+        }
+    }
+
+    function guardarDatos() {
+        try {
+            const datos = {
+                mes: document.getElementById('mes').value,
+                quincena: document.getElementById('quincena').value,
+                diurnos: document.getElementById('diurnos').value,
+                nocturnos: document.getElementById('nocturnos').value,
+                festivosD: document.getElementById('festivosD').value,
+                festivosN: document.getElementById('festivosN').value,
+                extras: document.getElementById('extras').value,
+                paramHorasNominales: document.getElementById('paramHorasNominales').value,
+                paramHoraBase: document.getElementById('paramHoraBase').value,
+                paramAuxTransporte: document.getElementById('paramAuxTransporte').value,
+                paramTopeIbc: document.getElementById('paramTopeIbc').value,
+                paramIbcManual: document.getElementById('paramIbcManual').value,
+                realNeto: document.getElementById('realNeto').value
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+        } catch(e) {}
+    }
+
+    function cargarDatos() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const d = JSON.parse(raw);
+            if (d.mes) document.getElementById('mes').value = d.mes;
+            if (d.quincena) document.getElementById('quincena').value = d.quincena;
+            if (d.diurnos !== undefined && d.diurnos !== '') document.getElementById('diurnos').value = d.diurnos;
+            if (d.nocturnos !== undefined && d.nocturnos !== '') document.getElementById('nocturnos').value = d.nocturnos;
+            if (d.festivosD !== undefined && d.festivosD !== '') document.getElementById('festivosD').value = d.festivosD;
+            if (d.festivosN !== undefined && d.festivosN !== '') document.getElementById('festivosN').value = d.festivosN;
+            if (d.extras !== undefined && d.extras !== '') document.getElementById('extras').value = d.extras;
+            if (d.paramHorasNominales !== undefined && d.paramHorasNominales !== '') document.getElementById('paramHorasNominales').value = d.paramHorasNominales;
+            if (d.paramHoraBase !== undefined && d.paramHoraBase !== '') document.getElementById('paramHoraBase').value = d.paramHoraBase;
+            if (d.paramAuxTransporte !== undefined && d.paramAuxTransporte !== '') document.getElementById('paramAuxTransporte').value = d.paramAuxTransporte;
+            if (d.paramTopeIbc !== undefined && d.paramTopeIbc !== '') document.getElementById('paramTopeIbc').value = d.paramTopeIbc;
+            if (d.paramIbcManual !== undefined) document.getElementById('paramIbcManual').value = d.paramIbcManual;
+            if (d.realNeto !== undefined) document.getElementById('realNeto').value = d.realNeto;
+        } catch(e) {}
+    }
+
+    function sincronizarHoraBase() {
+        const horas = parseFloat(document.getElementById('paramHorasNominales').value);
+        if (!isNaN(horas) && horas > 0) {
+            document.getElementById('paramHoraBase').value = (SMMLV / horas).toFixed(4);
+        }
+    }
+
+    function limpiarTodo() {
+        if (!confirm('¿Borrar todos los turnos y restablecer la herramienta?')) return;
+        ['diurnos', 'nocturnos', 'festivosD', 'festivosN'].forEach(id => document.getElementById(id).value = 0);
+        document.getElementById('extras').value = 0;
+        try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+        mostrarError('');
+        calcular();
+    }
+
+    function setTexto(id, txt) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = txt;
+    }
+
+    // Resumen dinámico de horas: evita confundir turnos con horas
+    function actualizarResumenHoras() {
+        const d  = parseFloat(document.getElementById('diurnos').value) || 0;
+        const n  = parseFloat(document.getElementById('nocturnos').value) || 0;
+        const fd = parseFloat(document.getElementById('festivosD').value) || 0;
+        const fn = parseFloat(document.getElementById('festivosN').value) || 0;
+        const ex = parseFloat(document.getElementById('extras').value) || 0;
+
+        // Equivalencia en horas debajo de cada campo de turnos
+        setTexto('eqDiurnos',   d  ? '= ' + (d * 12)  + ' horas' : '');
+        setTexto('eqNocturnos', n  ? '= ' + (n * 12)  + ' horas' : '');
+        setTexto('eqFestivosD', fd ? '= ' + (fd * 12) + ' horas' : '');
+        setTexto('eqFestivosN', fn ? '= ' + (fn * 12) + ' horas' : '');
+
+        const panel = document.getElementById('resumenHoras');
+        if (!panel) return;
+
+        const hD = d * 12, hN = n * 12, hFD = fd * 12, hFN = fn * 12;
+        const total = hD + hN + hFD + hFN + ex;
+        const turnos = d + n + fd + fn;
+
+        let html = '<div class="fila"><span>Diurnas</span><strong>' + hD + ' h</strong></div>' +
+                   '<div class="fila"><span>Nocturnas</span><strong>' + hN + ' h</strong></div>' +
+                   '<div class="fila"><span>Festivas diurnas</span><strong>' + hFD + ' h</strong></div>' +
+                   '<div class="fila"><span>Festivas nocturnas</span><strong>' + hFN + ' h</strong></div>' +
+                   '<div class="fila"><span>Horas extras</span><strong>' + ex + ' h</strong></div>' +
+                   '<div class="total"><span>TOTAL</span><span>' + total + ' h · ' + turnos + ' turnos</span></div>';
+
+        if (total > 200) {
+            html += '<p class="warn">⚠️ Has ingresado ' + total + ' h. En una quincena de 15 días el máximo realista es ~180 h (12 h × 15 días). Revisa tus valores.</p>';
+        } else if (total > 180) {
+            html += '<p class="warn">⚠️ ' + total + ' h supera el rango normal (~180 h por quincena). Verifica tus turnos.</p>';
+        } else {
+            html += '<p class="ok">✅ Dentro del rango normal (máx. ~180 h en una quincena).</p>';
+        }
+        panel.innerHTML = html;
+    }
+
+    // ===== Cargar desde colilla (horas → turnos) =====
+    function abrirColilla() {
+        const m = document.getElementById('modalColilla');
+        if (!m) return;
+        m.classList.add('activo');
+        document.getElementById('convResultado').innerHTML = '';
+    }
+
+    function cerrarColilla() {
+        const m = document.getElementById('modalColilla');
+        if (m) m.classList.remove('activo');
+    }
+
+    function convertirColilla() {
+        const hD  = parseFloat(document.getElementById('colDiurnas').value) || 0;
+        const hN  = parseFloat(document.getElementById('colNocturnas').value) || 0;
+        const hFD = parseFloat(document.getElementById('colFestD').value) || 0;
+        const hFN = parseFloat(document.getElementById('colFestN').value) || 0;
+        const hEx = parseFloat(document.getElementById('colExtras').value) || 0;
+
+        const tD  = Math.round(hD / 12);
+        const tN  = Math.round(hN / 12);
+        const tFD = Math.round(hFD / 12);
+        const tFN = Math.round(hFN / 12);
+
+        document.getElementById('diurnos').value = tD;
+        document.getElementById('nocturnos').value = tN;
+        document.getElementById('festivosD').value = tFD;
+        document.getElementById('festivosN').value = tFN;
+        document.getElementById('extras').value = hEx; // las extras ya se manejan en horas
+
+        document.getElementById('convResultado').innerHTML =
+            '<div class="resultado-conversion"><strong>✓ Convertido a turnos:</strong><br>' +
+            'Diurnas ' + hD + ' h → <strong>' + tD + ' turnos</strong><br>' +
+            'Nocturnas ' + hN + ' h → <strong>' + tN + ' turnos</strong><br>' +
+            'Festivas D ' + hFD + ' h → <strong>' + tFD + ' turnos</strong><br>' +
+            'Festivas N ' + hFN + ' h → <strong>' + tFN + ' turnos</strong><br>' +
+            'Extras ' + hEx + ' h → se usan directo (ya están en horas)</div>';
+
+        calcular();
+    }
 
     // ============================================================
     //  CÁLCULO PRINCIPAL
@@ -45,6 +216,24 @@
         const festN = parseFloat(document.getElementById('festivosN').value) || 0;
         const extras = parseFloat(document.getElementById('extras').value) || 0;
 
+        // Validación de inputs
+        const error = validarInputs(diurnos, nocturnos, festD, festN, extras);
+        if (error) {
+            mostrarError(error);
+            return;
+        }
+        mostrarError('');
+
+        // Parámetros ajustables del período (fallback a los defaults si están vacíos)
+        const pvHora = parseFloat(document.getElementById('paramHoraBase').value);
+        const vHora = isNaN(pvHora) ? VALOR_HORA_BASE : pvHora;
+        const pAux = parseFloat(document.getElementById('paramAuxTransporte').value);
+        const auxTransporte = isNaN(pAux) ? AUX_TRANSPORTE : pAux;
+        const pTope = parseFloat(document.getElementById('paramTopeIbc').value);
+        const topeIbc = isNaN(pTope) ? TOPE_IBC : pTope;
+        const ibcManualRaw = (document.getElementById('paramIbcManual').value || '').trim();
+        const ibcManual = ibcManualRaw === '' ? null : parseFloat(ibcManualRaw);
+
         // Horas equivalentes
         const hDiurnas = diurnos * FACTOR_DIURNO;
         const hNocturnas = nocturnos * FACTOR_NOCTURNO;
@@ -52,7 +241,6 @@
         const hFestD = festD * FACTOR_FESTIVO_D;
         const hFestN = festN * FACTOR_FESTIVO_N;
 
-        const vHora = VALOR_HORA_BASE;
         const vNocturna = vHora * 1.35;   // recargo 35%
         const vFestD = vHora * 1.75;      // dominical/festivo diurno
         const vFestN = vHora * 2.10;      // dominical/festivo nocturno
@@ -67,7 +255,7 @@
 
         // Auxilios
         const totalAux = AUX_COMUNICACION + AUX_ALIMENTACION_N + AUX_ALIMENTACION_E +
-                         AUX_MOVILIZACION + AUX_BIENESTAR + AUX_TRANSPORTE;
+                         AUX_MOVILIZACION + AUX_BIENESTAR + auxTransporte;
 
         // Bonificación semestral (solo en junio y diciembre, primera quincena)
         let bonif = 0;
@@ -79,10 +267,11 @@
                          valExtra + totalAux + bonif;
 
         // IBC (excluye auxilio de transporte y bonificación)
-        let ibc = totalDev - AUX_TRANSPORTE - bonif;
+        let ibc = totalDev - auxTransporte - bonif;
         if (ibc < SMMLV) ibc = SMMLV;
-        const TOPE_IBC = 2826775;
-        if (ibc > TOPE_IBC) ibc = TOPE_IBC;
+        if (ibc > topeIbc) ibc = topeIbc;
+        // IBC manual: si el usuario lo escribió, sobrescribe el cálculo automático
+        if (ibcManual !== null && !isNaN(ibcManual)) ibc = ibcManual;
 
         // Deducciones
         const eps = ibc * 0.0338;
@@ -134,7 +323,7 @@
             { cod: '045', desc: 'AUX.ALIMENTACI (N)', cant: '—', val: AUX_ALIMENTACION_N },
             { cod: '047', desc: 'AUX.ALIMENTACI (E)', cant: '—', val: AUX_ALIMENTACION_E },
             { cod: '048', desc: 'AUX.MOVILIZACI', cant: '—', val: AUX_MOVILIZACION },
-            { cod: '082', desc: 'AUXILIO DE TRA', cant: '—', val: AUX_TRANSPORTE },
+            { cod: '082', desc: 'AUXILIO DE TRA', cant: '—', val: auxTransporte },
             { cod: '089', desc: 'AUX.BIENESTAR', cant: '—', val: AUX_BIENESTAR }
         ];
         if (bonif > 0) {
@@ -142,7 +331,9 @@
         }
 
         renderizarTabla(devengados, deducciones, totalDev, totalDed, neto);
-        mostrarDiagnostico(quincena, mes, ibc, cuotaAdicional, bonif);
+        mostrarDiagnostico(quincena, mes, ibc, cuotaAdicional, bonif, ibcManual);
+        guardarDatos();
+        actualizarResumenHoras();
         comparar();
     }
 
@@ -172,7 +363,7 @@
         document.getElementById('neto').innerText = formatoMoneda(neto);
     }
 
-    function mostrarDiagnostico(quincena, mes, ibc, cuotaAdicional, bonif) {
+    function mostrarDiagnostico(quincena, mes, ibc, cuotaAdicional, bonif, ibcManual) {
         const div = document.getElementById('diagnosticoContenido');
         let txt = '';
         if (cuotaAdicional > 0) {
@@ -180,7 +371,7 @@
         } else {
             txt += `<p>✓ <strong>Cuota adicional</strong> inactiva este mes</p>`;
         }
-        txt += `<p>✓ <strong>IBC</strong> calculado: ${formatoMoneda(ibc)} (tope 2026: $2.826.775)</p>`;
+        txt += `<p>✓ <strong>IBC</strong> ${ibcManual !== null ? '(manual)' : 'calculado'}: ${formatoMoneda(ibc)}</p>`;
         if (bonif > 0) {
             txt += `<p style="color:var(--success);font-weight:700;">🎁 Bonificación semestral incluida: ${formatoMoneda(bonif)}</p>`;
         }
@@ -190,7 +381,9 @@
     function comparar() {
         const realDev = parseFloat(document.getElementById('realDev').value) || 0;
         const realDed = parseFloat(document.getElementById('realDed').value) || 0;
-        const realNet = realDev - realDed;
+        const realNetoRaw = (document.getElementById('realNeto').value || '').trim();
+        const realNeto = realNetoRaw === '' ? null : parseFloat(realNetoRaw);
+        const realNet = realNeto !== null ? realNeto : (realDev - realDed);
 
         const calcDev = ultimoCalculo.totalDev || 0;
         const calcDed = ultimoCalculo.totalDed || 0;
@@ -212,6 +405,11 @@
                     </tbody>
                 </table>
             </div>
+            ${realNeto !== null ? `<div class="resultado-conversion" style="margin-top:10px;">
+                Tu cálculo: <strong>${formatoMoneda(calcNet)}</strong><br>
+                Neto real: <strong>${formatoMoneda(realNeto)}</strong><br>
+                Diferencia: <strong>${formatoMoneda(realNeto - calcNet)}</strong> ${Math.abs(realNeto - calcNet) < 1 ? '✅ ¡Coinciden exactamente!' : ''}
+            </div>` : ''}
         `;
     }
 
@@ -296,9 +494,30 @@
     //  INICIALIZACIÓN
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
+        cargarDatos();
+        // Al cambiar las horas nominales, recalcular el valor hora base (SMMLV / horas)
+        const pHoras = document.getElementById('paramHorasNominales');
+        if (pHoras) {
+            pHoras.addEventListener('change', function() { sincronizarHoraBase(); calcular(); });
+        }
+        ['paramHoraBase', 'paramAuxTransporte', 'paramTopeIbc', 'paramIbcManual'].forEach(function(id) {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', function() { calcular(); });
+        });
+        // Resumen de horas en vivo (turnos ↔ horas)
+        ['diurnos', 'nocturnos', 'festivosD', 'festivosN', 'extras'].forEach(function(id) {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', actualizarResumenHoras);
+        });
+        // Cerrar el modal de colilla con Escape o clic en el fondo
+        const mc = document.getElementById('modalColilla');
+        if (mc) {
+            mc.addEventListener('click', function(e) { if (e.target === mc) cerrarColilla(); });
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') cerrarColilla(); });
+        }
         calcular();
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
+            navigator.serviceWorker.register('./service-worker.js')
                 .then(() => console.log('✅ Service Worker registrado'))
                 .catch(() => console.log('ℹ️ Service Worker no disponible'));
         }
